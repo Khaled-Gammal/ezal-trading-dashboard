@@ -1,0 +1,22 @@
+.confirm-button {
+    background-color: var(--primary);
+    color: white;
+    border: 1px solid var(--border-white);
+    border-radius: 5px;
+    height: 37px;
+    width: 100%;
+}
+
+.confirm-button:hover {
+    background-color: var(--background);
+}
+
+.cancel-button {
+    font-family: "Inter", sans-serif;
+    background-color: var(--primary);
+    color: black;
+    border: 1px solid var(--border-main);
+    border-radius: 5px;
+    height: 37px;
+    width: 100%;
+}
