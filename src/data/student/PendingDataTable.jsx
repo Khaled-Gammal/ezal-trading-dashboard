@@ -1,7 +1,7 @@
 
 'use client';
 
-import { DataTableDemo } from "@/components/shared/table-data";
+import { DataTableDemo } from "@/components/shared/table-data" ;
 import { useConfirmMessage } from "@/hooks/delete-dialog";
 
 
