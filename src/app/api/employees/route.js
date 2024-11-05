@@ -1,7 +1,6 @@
 import { BASE_URL } from "@/lib/utils";
 
 export async function GET(request) {
-  console.log(request);
   try {
     const res = await fetch(`${BASE_URL}hr/employees/`, {
       headers: {
@@ -10,8 +9,9 @@ export async function GET(request) {
       },
     });
     const data = await res.json();
+    console.log(data);
     return Response.json({
-      data,
+      data: data,
       status: 200
     })
   } catch (error) {

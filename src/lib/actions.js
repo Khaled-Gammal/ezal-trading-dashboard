@@ -37,7 +37,6 @@ async function handleLogin({ email, password }) {
         body: JSON.stringify({ email, password }),
       });
       const data = await response.json();
-console.log(JSON.stringify({ email, password }));
       if (response.status === 200) {
         setCookie("token", data?.token, { cookies }, Expired_time);
         redirectPath = `/`;

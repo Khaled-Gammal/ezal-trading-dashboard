@@ -105,27 +105,45 @@ export default function EmployeesDataTable({employees}) {
   ];
   const addEmployFields = [
     {
+      id:'image',
+      name: "image",  // Add `name` here to match state
+      label: "Employee Image",
+      placeholder: "Upload your image",
+      type: "image",
+    },
+    {
       id: "name",
+      name: "name",  // Add `name` here to match state
       label: "Employee Name",
       placeholder: "Enter your name",
       type: "text",
+    },{
+      id:"courses",
+      name: "courses",  // Add `name` here to match state
+      label: "Courses Name",
+      placeholder: "select your courses",
+      type: "selected",
+      options: ["Math", "Science", "English", "Arabic"],
+      
     },
     {
       id: "phone",
-      label: " Phone Number",
+      name: "phone",  // Add `name` here to match state
+      label: "Phone Number",
       placeholder: "Enter your phone number",
       type: "tel",
     },
     {
       id: "email",
-      label: "Email",
+      name: "email",  // Add `name` here to match state
+      label: "E-mail address",
       placeholder: "Enter your email",
       type: "email",
     },
-    
   ];
+  
   const [handleAddEmployee, addEmployeeConfirmDialog] = useAddDialog({
-    onConfirm: (id) => console.log("Add",id),
+    onConfirm: (state) => console.log("Add",state),
     title: "Add a New Employee",
     fields: addEmployFields,
   });

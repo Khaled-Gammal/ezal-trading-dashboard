@@ -14,7 +14,7 @@ function InputField({
 }) {
   return (
     <div className={className}>
-      <Label className="text-[14px] font-normal text-gray-500">{label}</Label>
+      <Label className="text-[14px] font-light text-gray-400">{label}</Label>
       <Input
         name={name}
         type={type}
@@ -22,7 +22,7 @@ function InputField({
         value={value}
         onChange={onChange}
         className={`border  rounded-[6px]  p-2 ${className} ${
-          error ? "border-red-500" : "border-gray-300"
+          error ? "border-red-500" : "border"
         }`}
       />
       {error && (

@@ -1,15 +1,14 @@
 
 import EmployeesDataTable from "@/data/employees/EployeesDataTable";
 import { PRODUCTION_URL } from "@/lib/utils";
-import { toast } from "sonner";
 
 export default async function EmployeesPage() {
-  const res=await fetch(`${PRODUCTION_URL}/api/employees/`)
-  const data=await res.json()
-
+  const res=await fetch(`http://localhost:3000/api/employees/`)
+  const data=res.json()
+console.log(data);
   return (
       <div>
-       <EmployeesDataTable employees={data}/>
+       <EmployeesDataTable />
       </div>
     )
   }
