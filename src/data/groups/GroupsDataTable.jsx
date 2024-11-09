@@ -1,6 +1,7 @@
 'use client';
 import { DataTableDemo } from "@/components/shared/table-data";
 import { useAddDialog } from "@/hooks/custom-dialog";
+import { useEditDialog } from "@/hooks/custom-edit-dialog";
 import { useConfirmMessage } from "@/hooks/delete-dialog";
 
 
@@ -15,24 +16,30 @@ export default function GroupsDataTable({groups}) {
     },
     {
       id: "id",
-      header: "ID",
+      header: "Group ID",
       accessorKey: "id",
       className: "text-left",
     },
     {
-      id: "amount",
-      header: "Amount",
-      accessorKey: "amount",
+      id: "name",
+      header: "Group Name",
+      accessorKey: "name",
     },
     {
-      id: "status",
-      header: "Status",
-      accessorKey: "status",
+      id: "instructor",
+      header: "Assigned Instructor",
+      accessorKey: "instructor",
     },
     {
-      id: "email",
-      header: "Email",
-      accessorKey: "email",
+      id: "number_students",
+      header: "No.of Student",
+      accessorKey: "number_students",
+    },
+    {
+      id: "department",
+      header: "Department Name ",
+      accessorKey: "department",
+      
     },
     {
       id: "actions",
@@ -43,91 +50,142 @@ export default function GroupsDataTable({groups}) {
   ];
   const data = [
     {
-      id: "m5gr84i9",
-      amount: 316,
-      status: "success",
-      email: "louda@mail.com",
+      id: 1,
+      name: "G9",
+      instructor: "Ahmed Mohamed",
+      number_students: "50",
+      department:"Quran",
     },
     {
-      id: "3u1reuv4",
-      amount: 242,
-      status: "success",
-      email: "louda@mail.com",
+      id: 2,
+      name: "G10",
+      instructor: "Mohamed Ahmed",
+      number_students: "50",
+      department:"Quran",
     },
     {
-      id: "derv1ws0",
-      amount: 837,
-      status: "processing",
-      email: "louda@mail.com",
+      id: 3,
+      name: "G11",
+      instructor: "Ali",
+      number_students: "50",
+      department:"Quran",
     },
     {
-        id: "derv1ws",
-        amount: 837,
-        status: "processing",
-        email: "louda@mail.com",
-      },
-      {
-        id: "dervws0",
-        amount: 837,
-        status: "processing",
-        email: "louda@mail.com",
-      },
-      {
-        id: "dev1ws0",
-        amount: 837,
-        status: "processing",
-        email: "louda@mail.com",
-      },
-      {
-        id: "derv1ws0",
-        amount: 837,
-        status: "processing",
-        email: "louda@mail.com",
-      },
-      {
-        id: "derv1ws0",
-        amount: 837,
-        status: "processing",
-        email: "louda@mail.com",
-      },
-      {
-        id: "derv1ws0",
-        amount: 837,
-        status: "processing",
-        email: "louda@mail.com",
-      },
-      {
-        id: "derv1ws0",
-        amount: 837,
-        status: "processing",
-        email: "louda@mail.com",
-      },
-  ];
-  const addEmployFields = [
-    {
-      id: "name",
-      label: "Employee Name",
-      placeholder: "Enter your name",
-      type: "text",
+      id: 4,
+      name: "G12",
+      instructor: "Ali Ahmed",
+      number_students: "50",
+      department:"Quran",
     },
     {
-      id: "phone",
-      label: " Phone Number",
-      placeholder: "Enter your phone number",
-      type: "tel",
+      id: 5,
+      name: "G13",
+      instructor: "Ahmed Ali",
+      number_students: "50",
+      department:"Quran",
     },
     {
-      id: "email",
-      label: "Email",
-      placeholder: "Enter your email",
-      type: "email",
+      id: 6,
+      name: "G14",
+      instructor: "Mohamed Ali",
+      number_students: "50",
+      department:"Quran",
+    },
+    {
+      id: 7,
+      name: "G15",
+      instructor: "Ali Ali",
+      number_students: "50",
+      department:"Quran",
+    },
+    {
+      id: 8,
+      name: "G16",
+      instructor: "Ali Ali",
+      number_students: "50",
+      department:"Quran",
+    },
+    {
+      id: 9,
+      name: "G17",
+      instructor: "Ali Ali",
+      number_students: "50",
+      department:"Quran",
+    },
+    {
+      id: 10,
+      name: "G18",
+      instructor: "Ali Ali",
+      number_students: "50",
+      department:"Quran",
     },
     
   ];
-  const [handleAddEmployee, addEmployeeConfirmDialog] = useAddDialog({
+  const addGroupFields = [
+    {
+      id: "group",
+      name: "group",  // Add `name` here to match state
+      label: "Group Name",
+      placeholder: "Enter group name",
+      type: "text",
+    },
+    {
+      id: "instructor",
+      name: "instructor",  // Add `name` here to match state
+      label: "Instructor Name",
+      placeholder: "Select instructor name",
+      type: "selected",
+      options: ["Ali", "Mohamed", "Ahmed"],
+      view: "name",
+    },
+    {
+      id: "department",
+      name: "department",  // Add `name` here to match state
+      label: "Department Name",
+      placeholder: "Select department name",
+      type: "selected",
+      options: ["Quran", "Tafseer", "Tagweed"],
+    },
+    
+  ];
+  
+  const editGroupFields = [
+    {
+      id: "name",
+      name: "name",  // Add `name` here to match state
+      label: "Group Name",
+      placeholder: "Enter group name",
+      type: "text",
+    },
+    {
+      id: "instructor",
+      name: "instructor",  // Add `name` here to match state
+      label: "Instructor Name",
+      placeholder: "Select instructor name",
+      type: "selected",
+      options: ["Ali", "Mohamed", "Ahmed"],
+      view: "name",
+    },
+    {
+      id: "department",
+      name: "department",  // Add `name` here to match state
+      label: "Department Name",
+      placeholder: "Select department name",
+      type: "selected",
+      options: ["Quran", "Tafseer", "Tagweed"],
+    },
+    
+  ];
+  
+  const [handleEditGroup, editGroupConfirmDialog] = useEditDialog({
+    onConfirm: (state) => handleEdit,
+    title: "Edit Group",
+    fields: editGroupFields,
+  });
+  const [handleAddGroup, addGroupConfirmDialog] = useAddDialog({
     onConfirm: (id) => console.log("Add",id),
-    title: "Add a New Employee",
-    fields: addEmployFields,
+    title: "AAdd a New Group",
+    fields: addGroupFields,
   });
   const [handleDelete, deleteComponentConfirmDialog] = useConfirmMessage({
     onConfirm:  async (id) => console.log("Delete",id),
@@ -142,10 +200,11 @@ export default function GroupsDataTable({groups}) {
     <div>
       <DataTableDemo data={data} columns={columns} isPending={false} 
       onDelete={handleDelete}
-      onEdit={handleEdit}
+      onEdit={handleEditGroup}
       />
      {deleteComponentConfirmDialog}
-     {addEmployeeConfirmDialog}
+     {editGroupConfirmDialog}
+     {addGroupConfirmDialog}
     </div>
   );
 }

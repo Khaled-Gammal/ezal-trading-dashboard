@@ -16,7 +16,7 @@ import {
   DialogTrigger,
 } from "@/components/ui/dialog";
 import { Plus } from "lucide-react";
-import { useReducer, useState } from "react";
+import { useEffect, useReducer, useState } from "react";
 
 const initialValues = {
   loading: false,
@@ -39,15 +39,24 @@ const reducer = (state, action) => {
   }
 };
 
-export const useAddDialog = ({
+export const useEditDialog = ({
   title = "Add Items",
   fields,
   onConfirm = () => {},
 }) => {
+ 
+  const [open, setOpen] = useState(false);
   const [args, setArgs] = useState(null);
+
   const handleOpen = (...params) => {
     setArgs([...params]);
+    setOpen(true);
   };
+
+  const handleClose = () => {
+    setOpen(false);
+  };
+ 
 
   const [state, dispatch] = useReducer(reducer, initialValues);
 
@@ -64,18 +73,20 @@ export const useAddDialog = ({
     }
   };
 
+  useEffect(() => {
+    
+    if (args) {
+      dispatch({ type: "values", payload:args.reduce((acc, field) => {
+        acc[field.name] = field.value;
+        return acc;
+      }
+      
+      )});
+    }
+  }, [args]);
+console.log(state);
   const dialog = (
-    <Dialog>
-      <DialogTrigger asChild className="mt-[93px]">
-        <div className="flex justify-end items-center ">
-          <Button
-            variant="outline"
-            className="rounded-full bg-primary text-[#fff] h-[39px] w-[39px] flex justify-center"
-          >
-            <Plus size={32} />
-          </Button>
-        </div>
-      </DialogTrigger>
+    <Dialog open={open} onOpenChange={handleClose}>
       <DialogContent className="sm:max-w-[425px]">
         <DialogHeader>
           <DialogTitle className="text-center text-primary text-lg font-medium">

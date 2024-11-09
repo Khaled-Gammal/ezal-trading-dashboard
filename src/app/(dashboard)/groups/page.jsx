@@ -1,5 +1,9 @@
+import GroupsDataTable from "@/data/groups/GroupsDataTable";
+
 export default function GroupsPage() {
   return (
-    <div>GroupsPage</div>
+    <div>
+      <GroupsDataTable />
+    </div>
   )
 }

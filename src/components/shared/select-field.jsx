@@ -36,6 +36,11 @@ function SelectField({
     }
   };
 
+  const handleSelectChange = (selectedValue) => {
+    console.log("Selected value: ", selectedValue); // Logs the selected value
+    onChange(selectedValue); // Call onChange to propagate the change
+  };
+
   return (
     <div className="w-full">
       {label && (
@@ -47,11 +52,13 @@ function SelectField({
         id={id}
         onOpenChange={options.length < 1 ? handleGetData : null}
         value={value}
-        onValueChange={onChange}
+        onValueChange={handleSelectChange} // Hook into the selection change
         error={error}
       >
         <SelectTrigger className="w-full">
-          <SelectValue>{renderValue()?value : placeholder}</SelectValue>
+          <SelectValue>
+            {renderValue() ? renderValue() : value ? options.find(opt => opt === value) : placeholder}
+          </SelectValue>
         </SelectTrigger>
         <SelectContent>
           {loading ? (
@@ -60,7 +67,7 @@ function SelectField({
             </SelectItem>
           ) : (
             options?.map((item) => (
-              <SelectItem key={item?.id} value={item?.id}>
+              <SelectItem key={item} value={item}>
                 {item[view] ? item[view] : item}
               </SelectItem>
             ))
