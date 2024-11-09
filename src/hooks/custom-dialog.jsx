@@ -5,6 +5,7 @@ import InputField from "@/components/shared/input-field";
 import SelectField from "@/components/shared/select-field";
 import TextAreaField from "@/components/shared/text-area";
 import { TimePickerDemo } from "@/components/shared/time-picker";
+import { TimePicker12Demo } from "@/components/shared/time-picker-component/time-picker-12hour-demo";
 import { Button } from "@/components/ui/button";
 import {
   Dialog,

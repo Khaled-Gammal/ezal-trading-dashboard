@@ -9,6 +9,7 @@ import { Button } from "@/components/ui/button";
 import { Calendar } from "@/components/ui/calendar";
 import { Dialog, DialogContent, DialogTrigger } from "@/components/ui/dialog";
 import { Label } from "../ui/label";
+import { TimePicker12Demo } from "./time-picker-component/time-picker-12hour-demo";
 
 export function TimePickerDemo({
   label = "",
@@ -39,8 +40,8 @@ type,
             <CalendarIcon className="mr-2 h-4 w-4" />
           </Button>
         </DialogTrigger>
-        <DialogContent className="w-auto p-4">
-          <Calendar
+        <DialogContent className="w-auto p-6">
+          <TimePicker12Demo
             mode="single"
             selected={value}
             onSelect={onChange}

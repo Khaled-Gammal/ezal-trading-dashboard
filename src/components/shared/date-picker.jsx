@@ -34,7 +34,7 @@ export function DatePickerDemo({
               !value && "text-muted-foreground"
             )}
           >
-            {value ? format(value, "PPP")?format(value,"PPP") : <span>{placeholder}</span>:null}
+            {value ? format(value, "PPP"): <span>{placeholder}</span>}
             <CalendarIcon className="mr-2 h-4 w-4" />
           </Button>
         </DialogTrigger>
