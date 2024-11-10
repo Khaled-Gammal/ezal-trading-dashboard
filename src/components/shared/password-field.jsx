@@ -1,23 +1,67 @@
-import { Label } from '@radix-ui/react-dropdown-menu'
-import React from 'react'
-import { Input } from '../ui/input'
+"use client";
+import React, { useRef, useState } from "react";
+import { Input } from "../ui/input";
+import { Eye, EyeOff } from "lucide-react";
+import { Label } from "../ui/label";
 
-function PasswordField({ label, placeholder, value, onChange, className,name }) {
+function PasswordField({
+  label,
+  placeholder,
+  value,
+  onChange,
+  className,
+  name,
+  id,
+}) {
+  const [showPassword, setShowPassword] = useState(false);
+  const labelRef = useRef(null);
+
+  const togglePasswordVisibility = () => {
+    setShowPassword(!showPassword);
+  };
+
+  const handleFocus = () => {
+    if (labelRef.current) {
+      labelRef.current.classList.add("text-primary");
+    }
+  };
+
+  const handleBlur = () => {
+    if (labelRef.current) {
+      labelRef.current.classList.remove("text-primary");
+    }
+  };
   return (
     <div className={className}>
-      <Label className="text-base font-normal text-primary">
+      <Label
+        ref={labelRef}
+        htmlFor={id}
+        className="text-base font-normal text-gray-400"
+      >
         {label}
       </Label>
-      <Input
-        name={name}
-        placeholder={placeholder}
-        type='password'
-        value={value}
-        onChange={onChange}
-        className={`border border-primary rounded-[6px] w-full p-2 ${className}`}
-      />
+      <div className="relative">
+        <Input
+          id={id}
+          name={name}
+          placeholder={placeholder}
+          type={showPassword ? "text" : "password"}
+          value={value}
+          onChange={onChange}
+          onFocus={handleFocus}
+          onBlur={handleBlur}
+          className={`border rounded-[6px] w-full p-2 ${className}`}
+        />
+        <button
+          type="button"
+          onClick={togglePasswordVisibility}
+          className="absolute inset-y-0 right-0 pr-3 flex items-center text-sm leading-5 border-width-0"
+        >
+          {showPassword ? <EyeOff size={20} /> : <Eye size={20} />}
+        </button>
+      </div>
     </div>
-  )
+  );
 }
 
-export default PasswordField
+export default PasswordField;
