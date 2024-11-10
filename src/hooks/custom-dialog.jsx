@@ -2,6 +2,7 @@ import { DatePickerDemo } from "@/components/shared/date-picker";
 import DragFile from "@/components/shared/drag-file";
 import ImagePicker from "@/components/shared/image-picker";
 import InputField from "@/components/shared/input-field";
+import { PhoneInput } from "@/components/shared/phone-number";
 import SelectField from "@/components/shared/select-field";
 import TextAreaField from "@/components/shared/text-area";
 import { TimePickerDemo } from "@/components/shared/time-picker";
@@ -172,7 +173,21 @@ export const useAddDialog = ({
                 });
               }}
               />
-              : (
+              : field.type==="phone"?(
+                <PhoneInput
+                name={field.name}
+                id={field.id}
+                label={field.label}
+                placeholder={field.placeholder}
+                value={state[field.name]}
+                onChange={(value) => {
+                  dispatch({
+                    type: "values",
+                    payload: { [field.name]: value },
+                  });
+                }}
+                />
+              ):(
                 <div className=" w-full" key={field.id}>
                   <InputField
                     name={field.name}

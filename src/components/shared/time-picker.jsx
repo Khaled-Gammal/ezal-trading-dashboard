@@ -16,9 +16,10 @@ export function TimePickerDemo({
   placeholder = "Pick a date",
   value,
   onChange,
-type,
   id,
 }) {
+
+  
   return (
     <div className="w-full">
       {label && (
@@ -42,11 +43,9 @@ type,
         </DialogTrigger>
         <DialogContent className="w-auto p-6">
           <TimePicker12Demo
-            mode="single"
-            selected={value}
-            onSelect={onChange}
-            use12HourFormat={true} 
-            initialFocus
+            date={value}
+            setDate={onChange}
+
           />
         </DialogContent>
       </Dialog>

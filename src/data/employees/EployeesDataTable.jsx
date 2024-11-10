@@ -205,7 +205,7 @@ export default function EmployeesDataTable({employees}) {
       name: "phone",  // Add `name` here to match state
       label: "Phone Number",
       placeholder: "Enter your phone number",
-      type: "tel",
+      type: "phone",
     },
     {
       id: "email",
@@ -236,7 +236,7 @@ export default function EmployeesDataTable({employees}) {
       name: "phone",  // Add `name` here to match state
       label: "Phone Number",
       placeholder: "Enter your phone number",
-      type: "tel",
+      type: "phone",
     },
     {
       id:"courses",

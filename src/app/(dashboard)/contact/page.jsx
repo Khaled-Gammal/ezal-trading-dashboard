@@ -1,13 +1,15 @@
 import InputField from "@/components/shared/input-field";
+import { PhoneInput } from "@/components/shared/phone-number";
 import { Label } from "@/components/ui/label";
+import { Phone } from "lucide-react";
 
 export default function ContactPage() {
   return (
     <div className="flex flex-col gap-4 w-full md:w-[761px]">
-      <InputField
+      <PhoneInput
       name='number phone'
       label='Phone Number'
-      type='number'
+      defaultCountry='EG'
       placeholder='Enter your phone number'
       className='w-full'
       />

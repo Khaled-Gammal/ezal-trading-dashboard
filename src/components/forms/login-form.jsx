@@ -5,34 +5,48 @@ import InputField from "../shared/input-field";
 import PasswordField from "../shared/password-field";
 import { Button } from "../ui/button";
 import { toast } from "sonner";
+import { useReducer } from "react";
+import { validate } from "@/lib/validation";
+const initialValues = {
+  email: "",
+  password: "",
+  errors:{
+    email:"",
+    password:""
+  },
+};
 
+function reducer(state,action){
+  switch(action.type){
+    case "email":
+      return {...state,email:action.payload};
+    case "password":
+      return {...state,password:action.payload};
+    case "errors":
+      return { ...state, errors: { ...state.errors, ...action.payload } };
+    default:
+      return state;
+  }
+}
 
 export default function LoginForm() {
-  
+  const [state, dispatch] = useReducer(reducer, initialValues);
+
   async function handleSubmit(event) {
     event.preventDefault();
-    const formData = new FormData(event.currentTarget);
-    const email = formData.get("email");
-    const password = formData.get("password");
+    const { valid, errors } = validate(state); // Use the validate function
+
+    if (!valid) {
+      // Handle validation errors
+      dispatch({ type: "errors", payload: errors });
+      return;
+    }
+  
     try {
-      const res = await handleLogin({ email, password });
-      if (res?.success) {
-        toast.success(res.success);
-      } else {
-        Object.keys(res).forEach((key) => {
-          if (key === "email") {
-            toast.error(res.email);
-          }
-          if (key === "password") {
-            toast.error(res.password);
-          }
-          if (key === "message") {
-            toast.error(res.message);
-          }
-        });
-      }
+      await handleLogin(state);
+      toast.success("Login successful");
     } catch (error) {
-      toast.error(error);
+      toast.error(error.message);
     }
   }
 
@@ -47,7 +61,10 @@ export default function LoginForm() {
         label="Email Address"
         placeholder="Enter your email"
         className={"w-full md:w-[492px]"}
-        
+        required
+        value={state.email}
+        onChange={(e)=>dispatch({type:"email",payload:e.target.value})}
+        error={state.errors.email}
       />
       <PasswordField
         name="password"
@@ -55,6 +72,10 @@ export default function LoginForm() {
         placeholder="Enter your password"
         type="password"
         className={"w-full md:w-[492px]"}
+        required
+        value={state.password}
+        onChange={(e)=>dispatch({type:"password",payload:e.target.value})}
+        error={state.errors.password}
       />
       <Button className="mt-4 md:w-[310px] sm:w-[50%]" type="submit">
         Login
