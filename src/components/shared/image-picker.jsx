@@ -4,17 +4,25 @@ import { Camera } from "lucide-react"
 import Image from "next/image"
 import { useRef } from "react"
 
-export default function ImagePicker({ value, onChange }) {
+export default function ImagePicker({ value, onChange, error }) {
     const inputRef = useRef() 
+
     const handleClick = () => {
         inputRef.current.click()
     }  
+
     const handleChange = (e) => {
         const image = e.target.files[0]
         onChange(image)
     }
+
+    console.log(error);
+
     return (
-        <div className='h-[70px] w-[70px] rounded-full bg-gray-300 flex justify-center items-center' onClick={handleClick}>
+        <div 
+            className={`h-[70px] w-[70px] rounded-full bg-gray-300 flex justify-center items-center ${error ? 'border-2 border-red-800' : ''}`} 
+            onClick={handleClick}
+        >
             <input 
                 type='file'
                 ref={inputRef}

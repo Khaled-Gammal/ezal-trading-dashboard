@@ -11,6 +11,7 @@ function PasswordField({
   onChange,
   className,
   name,
+  error,
   id,
 }) {
   const [showPassword, setShowPassword] = useState(false);
@@ -33,10 +34,11 @@ function PasswordField({
   };
   return (
     <div className={className}>
+      
       <Label
         ref={labelRef}
         htmlFor={id}
-        className="text-base font-normal text-gray-400"
+        className={`text-sm font-normal ${error ? "text-red-800" : "text-gray-400"}`}
       >
         {label}
       </Label>
@@ -60,6 +62,9 @@ function PasswordField({
           {showPassword ? <EyeOff size={20} /> : <Eye size={20} />}
         </button>
       </div>
+      {error && (
+        <span className="text-red-800 text-xs font-normal">{error}</span>
+      )}
     </div>
   );
 }

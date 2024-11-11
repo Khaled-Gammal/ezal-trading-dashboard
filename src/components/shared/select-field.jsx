@@ -1,5 +1,5 @@
 "use client";
-import { useState } from "react";
+import { useRef, useState } from "react";
 import { Label } from "../ui/label";
 import {
   Select,
@@ -23,7 +23,7 @@ function SelectField({
 }) {
   const [loading, setLoading] = useState(false);
   const path = "hr/employees/";
-
+const labelRef = useRef(null);
   const handleGetData = async () => {
     setLoading(true);
     try {
@@ -40,19 +40,36 @@ function SelectField({
     console.log("Selected value: ", selectedValue); // Logs the selected value
     onChange(selectedValue); // Call onChange to propagate the change
   };
+  const handleFocus = () => {
+    if (labelRef.current) {
+      labelRef.current.classList.add("text-primary"); // Apply primary color on focus
+    }
+  };
+
+  const handleBlur = () => {
+    if (labelRef.current) {
+      labelRef.current.classList.remove("text-primary"); // Remove primary color on blur
+    }
+  };
 
   return (
     <div className="w-full">
-      {label && (
-        <Label htmlFor={id} className="text-sm font-light text-gray-400">
+       {label && (
+        <Label
+          ref={labelRef}
+          htmlFor={id}
+          className={`text-sm font-light ${error ? "text-red-800" : "text-gray-400"}`}
+        >
           {label}
         </Label>
       )}
       <Select
         id={id}
-        onOpenChange={options.length < 1 ? handleGetData : null}
+         onOpenChange={options.length < 1 ? handleGetData : null}
         value={value}
         onValueChange={handleSelectChange} // Hook into the selection change
+        onFocus={handleFocus}
+        onBlur={handleBlur}
         error={error}
       >
         <SelectTrigger className="w-full">
@@ -74,7 +91,7 @@ function SelectField({
           )}
         </SelectContent>
       </Select>
-      {error && <div className="text-red-800 text-sm">{error}</div>}
+      {error && <div className="text-red-800 text-xs font-normal">{error}</div>}
     </div>
   );
 }

@@ -32,11 +32,19 @@ function reducer(state,action){
 }
 
 export default function LoginForm() {
+
   const [state, dispatch] = useReducer(reducer, initialValues);
+
+  const schema = {
+    email: { required: true,
+      pattern: /^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,}$/
+     },
+    password: { required: true },
+  };
 
   async function handleSubmit(event) {
     event.preventDefault();
-    const { valid, errors } = validate(state); // Use the validate function
+    const { valid, errors } = validate(state,schema); // Use the validate function
 
     if (!valid) {
       // Handle validation errors
@@ -46,7 +54,7 @@ export default function LoginForm() {
   
     try {
       dispatch({ type: "loading", payload: true });
-      await handleLogin(state);
+      // await handleLogin(state);
       toast.success("Login successful");
     } catch (error) {
       toast.error(error.message);
@@ -62,11 +70,10 @@ export default function LoginForm() {
     >
       <InputField
         name="email"
-        type="email"
+        type="text"
         label="Email Address"
         placeholder="Enter your email"
         className={"w-full md:w-[492px]"}
-        required
         value={state.email}
         onChange={(e)=>dispatch({type:"email",payload:e.target.value})}
         error={state.errors.email}
@@ -77,12 +84,11 @@ export default function LoginForm() {
         placeholder="Enter your password"
         type="password"
         className={"w-full md:w-[492px]"}
-        required
         value={state.password}
         onChange={(e)=>dispatch({type:"password",payload:e.target.value})}
         error={state.errors.password}
       />
-      <Button className="mt-4 md:w-[310px] sm:w-[50%]" type="submit" disabled={state.loading}>
+      <Button className="mt-4 md:w-[310px] sm:w-[50%]" type="submit" disabled={state?.loading}>
         {state.loading?
         <Loader2 className="animate-spin" />:
         "Login"}

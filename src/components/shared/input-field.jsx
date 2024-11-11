@@ -11,7 +11,6 @@ function InputField({
   onChange,
   className,
   error,
-  required,
   name,
   id,
 }) {
@@ -34,7 +33,7 @@ function InputField({
       <Label
         ref={labelRef}
         htmlFor={id}
-        className={error?"text-red-800 text-xs":"text-[14px] font-light text-gray-400"}
+        className={`text-sm font-normal ${error ? "text-red-800" : "text-gray-400"}`}
       >
         {label}
       </Label>
@@ -51,7 +50,7 @@ function InputField({
           error ? "border-red-800" : "border"
         } focus:border-primary`}
       />
-      {error && <span className="text-red-800 text-xs">{error}</span>}
+      {error && <span className="text-red-800 text-xs font-normal">{error}</span>}
     </div>
   );
 }

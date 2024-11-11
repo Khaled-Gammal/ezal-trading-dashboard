@@ -24,18 +24,18 @@ import { toast } from "sonner";
 
 const initialValues = {
   loading: false,
-  error: null,
+  error: {}, // Error state initialized as an empty object
   // Initialize with empty values for dynamic fields
 };
 
 const reducer = (state, action) => {
   switch (action.type) {
     case "loading":
-      return { ...state, loading: true, error: null };
+      return { ...state, loading: true, error: {} }; // Clear errors on loading
     case "error":
       return { ...state, loading: false, error: action.payload };
     case "success":
-      return { ...state, loading: false, error: null };
+      return { ...state, loading: false, error: {} }; // Clear errors on success
     case "values":
       return { ...state, ...action.payload }; // Merge new values with the existing state
     default:
@@ -53,30 +53,36 @@ export const useAddDialog = ({
     setArgs([...params]);
   };
 
-const [state, dispatch] = useReducer(reducer, initialValues);
-const schema=fields.reduce((acc,field)=>({...acc,[field.name]:{required:field.required}}),{});
-  
-const handleSubmit = async (e) => {
+  const [state, dispatch] = useReducer(reducer, initialValues);
+
+  // Dynamically generate the validation schema for each field
+  const schema = fields.reduce(
+    (acc, field) => ({
+      ...acc,
+      [field.name]: { required: field.required },
+    }),
+    {}
+  );
+
+  const handleSubmit = async (e) => {
     e.preventDefault();
-    const { valid, errors } = validate(state,schema); // Use the validate function
+
+    // Validate state against the schema
+    const { valid, errors } = validate(state, schema);
     if (!valid) {
-      // Handle validation errors
-      console.log("errors",errors);
-      
-      dispatch({ type: "error", payload: Object.keys(errors).map((key)=>errors[key].join(",")).join(",") });
+      dispatch({ type: "error", payload: errors }); // Set errors in state
       return;
     }
-    dispatch({ type: "loading",payload:true }); // Show loading state when submitting
+
+    dispatch({ type: "loading" }); // Show loading state during submission
     try {
-      // Submit logic here, e.g., call API
-      console.log("Form submitted with values:", state);
       onConfirm(state); // Call onConfirm callback with form values
       dispatch({ type: "success" }); // Set success state on successful submission
       toast.success("Item added successfully");
     } catch (error) {
-      dispatch({ type: "error", payload: error.message }); // Handle error state
-    }finally{
-      dispatch({ type: "loading",payload:false }); // Hide loading state after submission
+      dispatch({ type: "error", payload: { global: error.message } }); // Handle error state
+    } finally {
+      dispatch({ type: "loading", payload: false }); // Hide loading state after submission
     }
   };
 
@@ -105,6 +111,7 @@ const handleSubmit = async (e) => {
                 <div className="mb-2" key={field.id}>
                   <ImagePicker
                     value={state[field.name]}
+                    error={state.error[field.name]}
                     onChange={(value) => {
                       dispatch({
                         type: "values",
@@ -119,8 +126,7 @@ const handleSubmit = async (e) => {
                   id={field.id}
                   label={field.label}
                   placeholder={field.placeholder}
-                  error={state.error}
-                  view={field.view}
+                  error={state.error[field.name]} // Display individual field error
                   value={state[field.name] || ""}
                   options={field.options}
                   onChange={(value) => {
@@ -163,7 +169,7 @@ const handleSubmit = async (e) => {
                     id={field.id}
                     label={field.label}
                     placeholder={field.placeholder}
-                    error={state.error}
+                    error={state.error[field.name]} // Display individual field error
                     value={state[field.name] || ""}
                     onChange={(e) => {
                       dispatch({
@@ -173,36 +179,37 @@ const handleSubmit = async (e) => {
                     }}
                   />
                 </div>
-              ) :field.type==="file"?
-              <DragFile
-              id={field.id}
-              label={field.label}
-              name={field.name}
-              type={field.upload}
-              value={state[field.name]}
-              onChange={(value) => {
-                dispatch({
-                  type: "values",
-                  payload: { [field.name]: value },
-                });
-              }}
-              />
-              : field.type==="phone"?(
-                <PhoneInput
-                name={field.name}
-                id={field.id}
-                label={field.label}
-                placeholder={field.placeholder}
-                value={state[field.name]}
-                onChange={(value) => {
-                  dispatch({
-                    type: "values",
-                    payload: { [field.name]: value },
-                  });
-                }}
+              ) : field.type === "file" ? (
+                <DragFile
+                  id={field.id}
+                  label={field.label}
+                  name={field.name}
+                  type={field.upload}
+                  value={state[field.name]}
+                  onChange={(value) => {
+                    dispatch({
+                      type: "values",
+                      payload: { [field.name]: value },
+                    });
+                  }}
                 />
-              ):(
-                <div className=" w-full" key={field.id}>
+              ) : field.type === "phone" ? (
+                <PhoneInput
+                  name={field.name}
+                  id={field.id}
+                  label={field.label}
+                  placeholder={field.placeholder}
+                  value={state[field.name]}
+                  error={state.error[field.name]} 
+                  onChange={(value) => {
+                    dispatch({
+                      type: "values",
+                      payload: { [field.name]: value },
+                    });
+                  }}
+                />
+              ) : (
+                <div className="w-full" key={field.id}>
                   <InputField
                     name={field.name}
                     type={field.type}
@@ -210,7 +217,7 @@ const handleSubmit = async (e) => {
                     label={field.label}
                     placeholder={field.placeholder}
                     required={field.required}
-                    error={state.error}
+                    error={state.error[field.name]} // Display individual field error
                     value={state[field.name] || ""}
                     onChange={(e) => {
                       dispatch({
@@ -234,12 +241,14 @@ const handleSubmit = async (e) => {
               type="submit"
               disabled={state?.loading}
             >
-              {state?.loading ?
-              <>
-               <Loader2 className="animate-spin" />
-               Please wait...
-              </>
-              : "Add"}
+              {state?.loading ? (
+                <>
+                  <Loader2 className="animate-spin" />
+                  Please wait...
+                </>
+              ) : (
+                "Add"
+              )}
             </Button>
           </DialogFooter>
         </form>

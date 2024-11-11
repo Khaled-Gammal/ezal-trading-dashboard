@@ -33,8 +33,12 @@ const PhoneInput =
   React.forwardRef(
     ({ className, onChange, ...props }, ref) => {
       return (
-        <div className="flex flex-col gap-1">
-            {props.label&&<Label className="text-[14px] font-light text-gray-400">{props?.label}</Label>}
+        <div className="flex flex-col gap-1 w-full">
+            {props.label && (
+              <Label className={`text-[14px] font-light ${props.error ? 'text-red-800' : 'text-gray-400'}`}>
+                {props.label}
+              </Label>
+            )}
         <RPNInput.default
           ref={ref}
           className={cn("flex", className)}
@@ -54,6 +58,7 @@ const PhoneInput =
           onChange={(value) => onChange?.(value || "")}
           {...props}
         />
+        {props.error&&<Label className="text-red-800 text-xs font-normal">{props?.error}</Label>}
         </div>
       );
     },
@@ -62,14 +67,13 @@ PhoneInput.displayName = "PhoneInput";
 
 const InputComponent = React.forwardRef(
   ({ className, ...props }, ref) => (
-    <div className="flex-1">
     <Input
       className={cn("rounded-e-lg rounded-s-none w-full", className)}
       {...props}
       ref={ref}
     />
-    {props.error&&<Label className="text-red-800">{props?.error}</Label>}
-    </div>
+    
+   
   ),
 );
 InputComponent.displayName = "InputComponent";

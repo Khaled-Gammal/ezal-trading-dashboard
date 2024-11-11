@@ -175,6 +175,7 @@ export default function EmployeesDataTable({employees}) {
       label: "Employee Image",
       placeholder: "Upload your image",
       type: "image",
+      required: true,
     },
     {
       id: "name",
@@ -190,7 +191,7 @@ export default function EmployeesDataTable({employees}) {
       placeholder: "select your courses",
       type: "selected",
       options: ["Tagweed", "Quran", "Tafseer"],
-      
+      required: true,
     },
     {
       id:"groups",
@@ -199,7 +200,7 @@ export default function EmployeesDataTable({employees}) {
       placeholder: "select your groups",
       type: "selected",
       options: ["G9", "G3", "G2"],
-      
+      required: true,
     },
     {
       id: "phone",
@@ -207,6 +208,7 @@ export default function EmployeesDataTable({employees}) {
       label: "Phone Number",
       placeholder: "Enter your phone number",
       type: "phone",
+      required: true,
     },
     {
       id: "email",
@@ -241,6 +243,7 @@ export default function EmployeesDataTable({employees}) {
       label: "Phone Number",
       placeholder: "Enter your phone number",
       type: "phone",
+      required: true,
     },
     {
       id:"courses",
