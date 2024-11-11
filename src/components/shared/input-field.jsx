@@ -11,6 +11,7 @@ function InputField({
   onChange,
   className,
   error,
+  required,
   name,
   id,
 }) {

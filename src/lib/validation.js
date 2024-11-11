@@ -1,23 +1,38 @@
 // validation.js
 
-function validate(state) {
-    let valid = true;
-    let errors = {};
-  
-    if (!state.email) {
-      errors.email = 'Email is required';
-      valid = false;
-    } else if (!/\S+@\S+\.\S+/.test(state.mail)) {
-      errors.email = 'Email address is invalid';
-      valid = false;
-    }
-  
-    if (!state.password) {
-      errors.password = 'Password is required';
+function validate(state, schema) {
+  let valid = true;
+  let errors = {};
+
+  for (const field in schema) {
+    const rules = schema[field];
+    const value = state[field];
+
+    errors[field] = [];
+
+    if (rules.required && !value) {
+      errors[field].push(`${field} is required`);
       valid = false;
     }
-  
-    return { valid, errors };
+    if (rules.pattern && !rules.pattern.test(value)) {
+      errors[field].push(`${field} is invalid`);
+      valid = false;
+    }
+    if (rules.minLength && value.length < rules.minLength) {
+      errors[field].push(`${field} must be at least ${rules.minLength} characters`);
+      valid = false;
+    }
+    if (rules.maxLength && value.length > rules.maxLength) {
+      errors[field].push(`${field} must be no more than ${rules.maxLength} characters`);
+      valid = false;
+    }
+
+    if (errors[field].length === 0) {
+      delete errors[field];
+    }
   }
-  
-  export { validate };
+
+  return { valid, errors };
+}
+
+export { validate };

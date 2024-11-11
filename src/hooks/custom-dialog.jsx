@@ -17,8 +17,10 @@ import {
   DialogTitle,
   DialogTrigger,
 } from "@/components/ui/dialog";
-import { Plus } from "lucide-react";
+import { validate } from "@/lib/validation";
+import { Loader2, Plus } from "lucide-react";
 import { useReducer, useState } from "react";
+import { toast } from "sonner";
 
 const initialValues = {
   loading: false,
@@ -51,18 +53,30 @@ export const useAddDialog = ({
     setArgs([...params]);
   };
 
-  const [state, dispatch] = useReducer(reducer, initialValues);
-
-  const handleSubmit = async (e) => {
+const [state, dispatch] = useReducer(reducer, initialValues);
+const schema=fields.reduce((acc,field)=>({...acc,[field.name]:{required:field.required}}),{});
+  
+const handleSubmit = async (e) => {
     e.preventDefault();
-    dispatch({ type: "loading" }); // Show loading state when submitting
+    const { valid, errors } = validate(state,schema); // Use the validate function
+    if (!valid) {
+      // Handle validation errors
+      console.log("errors",errors);
+      
+      dispatch({ type: "error", payload: Object.keys(errors).map((key)=>errors[key].join(",")).join(",") });
+      return;
+    }
+    dispatch({ type: "loading",payload:true }); // Show loading state when submitting
     try {
       // Submit logic here, e.g., call API
       console.log("Form submitted with values:", state);
       onConfirm(state); // Call onConfirm callback with form values
       dispatch({ type: "success" }); // Set success state on successful submission
+      toast.success("Item added successfully");
     } catch (error) {
       dispatch({ type: "error", payload: error.message }); // Handle error state
+    }finally{
+      dispatch({ type: "loading",payload:false }); // Hide loading state after submission
     }
   };
 
@@ -195,6 +209,7 @@ export const useAddDialog = ({
                     id={field.id}
                     label={field.label}
                     placeholder={field.placeholder}
+                    required={field.required}
                     error={state.error}
                     value={state[field.name] || ""}
                     onChange={(e) => {
@@ -217,9 +232,14 @@ export const useAddDialog = ({
             <Button
               className={"confirm-button w-full"}
               type="submit"
-              disabled={state.loading}
+              disabled={state?.loading}
             >
-              {state.loading ? "Loading..." : "Add"}
+              {state?.loading ?
+              <>
+               <Loader2 className="animate-spin" />
+               Please wait...
+              </>
+              : "Add"}
             </Button>
           </DialogFooter>
         </form>

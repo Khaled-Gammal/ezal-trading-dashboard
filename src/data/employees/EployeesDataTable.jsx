@@ -182,6 +182,7 @@ export default function EmployeesDataTable({employees}) {
       label: "Employee Name",
       placeholder: "Enter your name",
       type: "text",
+      required: true,
     },{
       id:"courses",
       name: "courses",  // Add `name` here to match state
@@ -213,6 +214,7 @@ export default function EmployeesDataTable({employees}) {
       label: "E-mail address",
       placeholder: "Enter your email",
       type: "email",
+      required: true,
     },
   ];
   
@@ -223,6 +225,7 @@ export default function EmployeesDataTable({employees}) {
       label: "Employee Name",
       placeholder: "Enter your name",
       type: "text",
+      required: true,
     },
     {
       id: "email",
@@ -230,6 +233,7 @@ export default function EmployeesDataTable({employees}) {
       label: "E-mail address",
       placeholder: "Enter your email",
       type: "email",
+      required: true,
     },
     {
       id:"phone",
