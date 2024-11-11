@@ -7,9 +7,11 @@ import { Button } from "../ui/button";
 import { toast } from "sonner";
 import { useReducer } from "react";
 import { validate } from "@/lib/validation";
+import { Loader2 } from "lucide-react";
 const initialValues = {
   email: "",
   password: "",
+  loading: false,
   errors:{
     email:"",
     password:""
@@ -43,10 +45,13 @@ export default function LoginForm() {
     }
   
     try {
+      dispatch({ type: "loading", payload: true });
       await handleLogin(state);
       toast.success("Login successful");
     } catch (error) {
       toast.error(error.message);
+    }finally{
+      dispatch({ type: "loading", payload: false });
     }
   }
 
@@ -77,8 +82,10 @@ export default function LoginForm() {
         onChange={(e)=>dispatch({type:"password",payload:e.target.value})}
         error={state.errors.password}
       />
-      <Button className="mt-4 md:w-[310px] sm:w-[50%]" type="submit">
-        Login
+      <Button className="mt-4 md:w-[310px] sm:w-[50%]" type="submit" disabled={state.loading}>
+        {state.loading?
+        <Loader2 className="animate-spin" />:
+        "Login"}
       </Button>
     </form>
   );
