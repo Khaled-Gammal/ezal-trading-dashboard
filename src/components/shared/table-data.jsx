@@ -112,7 +112,7 @@ export function DataTableDemo({
       )}
       <div className="rounded-md border">
         <Table>
-          <TableHeader className="bg-white-table">
+          <TableHeader className="bg-white-table dark:bg-[#242424]">
             {table.getHeaderGroups().map((headerGroup) => (
               <TableRow key={headerGroup.id}>
                 {headerGroup.headers.map(

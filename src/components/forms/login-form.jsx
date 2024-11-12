@@ -26,6 +26,8 @@ function reducer(state,action){
       return {...state,password:action.payload};
     case "errors":
       return { ...state, errors: { ...state.errors, ...action.payload } };
+    case "loading":
+      return { ...state, loading: action.payload };
     default:
       return state;
   }
@@ -89,9 +91,14 @@ export default function LoginForm() {
         error={state.errors.password}
       />
       <Button className="mt-4 md:w-[310px] sm:w-[50%]" type="submit" disabled={state?.loading}>
-        {state.loading?
-        <Loader2 className="animate-spin" />:
-        "Login"}
+      {state?.loading ? (
+                <>
+                  <Loader2 className="animate-spin" />
+                  Please wait...
+                </>
+              ) : (
+                "Login"
+              )}
       </Button>
     </form>
   );

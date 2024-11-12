@@ -2,6 +2,7 @@
 import { DataTableDemo } from "@/components/shared/table-data";
 import { useAddDialog } from "@/hooks/custom-dialog";
 import { useConfirmMessage } from "@/hooks/delete-dialog";
+import { useStepsDialog } from "@/hooks/use-steps-dialog";
 
 export default function TasksDataTable({ tasks }) {
   const columns = [
@@ -152,7 +153,7 @@ export default function TasksDataTable({ tasks }) {
       type: "text",
     },
   ];
-  const [handleAddEmployee, addSessionConfirmDialog] = useAddDialog({
+  const [handleAddEmployee, addSessionConfirmDialog] = useStepsDialog({
     onConfirm: (id) => console.log("Add", id),
     title: "Add a New Session",
     fields: addSessionFields,

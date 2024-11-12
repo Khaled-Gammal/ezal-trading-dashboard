@@ -104,6 +104,7 @@ export let PageRoutes = [
       {
         title: "General",
         path: "/settings/general",
+        
       },
     ],
   },
