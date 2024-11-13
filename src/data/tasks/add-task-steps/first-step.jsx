@@ -1,4 +1,7 @@
 'use client'
+import { DatePickerDemo } from '@/components/shared/date-picker'
+import InputField from '@/components/shared/input-field'
+import SelectField from '@/components/shared/select-field'
 import { Button } from '@/components/ui/button'
 import { Card, CardContent, CardDescription, CardFooter, CardHeader, CardTitle } from '@/components/ui/card'
 import { Input } from '@/components/ui/input'
@@ -19,25 +22,44 @@ export default function FirstStep() {
 
     return (
         <div>
-            <Card>
-                <CardHeader>
-                    <CardTitle>Step 1</CardTitle>
-                    <CardDescription>Fill out the information below.</CardDescription>
-                </CardHeader>
-                <CardContent className="space-y-2">
-                    <div className="space-y-1">
-                        <Label htmlFor="name1">Name</Label>
-                        <Input id="name1" />
-                    </div>
-                    <div className="space-y-1">
-                        <Label htmlFor="email1">Email</Label>
-                        <Input id="email1" />
-                    </div>
-                </CardContent>
-                <CardFooter>
-                    <Button onClick={handleNextClick}>Next</Button>
-                </CardFooter>
-            </Card>
+           <div className="mt-4 flex flex-col gap-[14px]">
+            <InputField
+            name={'title'}
+            label={'Title'}
+            placeholder={'Enter the title of the task'}
+            value={'title'}
+            />
+            <SelectField
+            name={'Assigned To'}
+            label={'Assigned To'}
+            placeholder={'Select the person'}
+            value={'assignedTo'}
+            />
+            <SelectField
+            name={'Status'}
+            label={'Status'}
+            placeholder={'Select the status'}
+            value={'status'}
+            options={['Started','Not Started','Completed']}
+            />
+            <DatePickerDemo
+            id={'creationDate'}
+            label={'Creation Date'}
+            placeholder={'Select the date'}
+            value={'1/1/1990'}
+            />
+            <InputField
+            name="Due Date"
+            label="Due Date"
+            placeholder="Select the date"
+            value="2 days"
+            />
+            </div>
+            <div className="mt-8 flex justify-around gap-20">
+            <Button className='cancel-button w-full'>Cancel</Button>
+            <Button className='confirm-button w-full' onClick={handleNextClick}>Next</Button>
+           
+            </div>
         </div>
     )
 }
