@@ -8,7 +8,7 @@ import {
   SelectTrigger,
   SelectValue,
 } from "../ui/select";
-import { GetDataInServer } from "@/lib/actions/get-server";
+import { GetDataInServerSide } from "@/lib/actions/get-server";
 
 function SelectField({
   id,
@@ -18,6 +18,7 @@ function SelectField({
   options = [],
   placeholder = "Select",
   error,
+  disabled = false,
   renderValue = () => null,
   view = "name",
 }) {
@@ -27,7 +28,7 @@ const labelRef = useRef(null);
   const handleGetData = async () => {
     setLoading(true);
     try {
-      const res = await GetDataInServer({ path: path });
+      const res = await GetDataInServerSide({ path: path });
       options = res.data;
     } catch (error) {
       console.log(error);
@@ -71,6 +72,7 @@ const labelRef = useRef(null);
         onFocus={handleFocus}
         onBlur={handleBlur}
         error={error}
+        disabled={disabled}
       >
         <SelectTrigger className="w-full">
           <SelectValue>

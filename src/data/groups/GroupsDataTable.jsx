@@ -48,79 +48,16 @@ export default function GroupsDataTable({groups}) {
       className: "text-center",
     },
   ];
-  const data = [
-    {
-      id: 1,
-      name: "G9",
-      instructor: "Ahmed Mohamed",
-      number_students: "50",
-      department:"Quran",
-    },
-    {
-      id: 2,
-      name: "G10",
-      instructor: "Mohamed Ahmed",
-      number_students: "50",
-      department:"Quran",
-    },
-    {
-      id: 3,
-      name: "G11",
-      instructor: "Ali",
-      number_students: "50",
-      department:"Quran",
-    },
-    {
-      id: 4,
-      name: "G12",
-      instructor: "Ali Ahmed",
-      number_students: "50",
-      department:"Quran",
-    },
-    {
-      id: 5,
-      name: "G13",
-      instructor: "Ahmed Ali",
-      number_students: "50",
-      department:"Quran",
-    },
-    {
-      id: 6,
-      name: "G14",
-      instructor: "Mohamed Ali",
-      number_students: "50",
-      department:"Quran",
-    },
-    {
-      id: 7,
-      name: "G15",
-      instructor: "Ali Ali",
-      number_students: "50",
-      department:"Quran",
-    },
-    {
-      id: 8,
-      name: "G16",
-      instructor: "Ali Ali",
-      number_students: "50",
-      department:"Quran",
-    },
-    {
-      id: 9,
-      name: "G17",
-      instructor: "Ali Ali",
-      number_students: "50",
-      department:"Quran",
-    },
-    {
-      id: 10,
-      name: "G18",
-      instructor: "Ali Ali",
-      number_students: "50",
-      department:"Quran",
-    },
-    
-  ];
+  const Groups=groups?.results.map((group) => {
+    return {
+      id: group.id,
+      name: group.name,
+      instructor: group.instructor,
+      number_students: group.students.length,
+      department: group.department,
+    };
+  }
+  );
   const addGroupFields = [
     {
       id: "group",
@@ -198,7 +135,7 @@ export default function GroupsDataTable({groups}) {
  
   return (
     <div>
-      <DataTableDemo data={data} columns={columns} isPending={false} 
+      <DataTableDemo data={Groups} columns={columns} isPending={false} 
       onDelete={handleDelete}
       onEdit={handleEditGroup}
       />

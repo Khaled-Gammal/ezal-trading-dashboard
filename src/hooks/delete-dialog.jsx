@@ -11,11 +11,13 @@ import {
 import { useState } from "react";
 import deleteIcon from "@/assets/icons/delete.png";
 import Image from "next/image";
+import { toast } from "sonner";
 
 export const useConfirmMessage = ({
   onConfirm = () => {},
   title = "Delete Items",
   text = "Do you sure you wanna to delete this item ? ",
+  successMessage = "Item deleted successfully",
 }) => {
   const [open, setOpen] = useState(false);
   const [args, setArgs] = useState(null);
@@ -28,7 +30,10 @@ export const useConfirmMessage = ({
   const handleClose = () => {
     setOpen(false);
   };
-
+  const viewMessage = (message) => {
+    toast.success(message||successMessage);
+    
+  }
   const dialog = (
     <Dialog open={open} onClose={handleClose} >
       <DialogContent className="md:w-[549px] w-full px-[60px] py-[24px] gap-[59px]" >
@@ -50,7 +55,13 @@ export const useConfirmMessage = ({
           className={'confirm-button w-full'}
             type="submit"
             onClick={() => {
-              onConfirm(...args);
+              onConfirm(...args)
+                .then((res) => {
+                  viewMessage(res?.deails || successMessage);
+                })
+                .catch((err) => {
+                  viewMessage(err?.error);
+                });
               handleClose();
             }}
           >

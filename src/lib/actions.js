@@ -1,8 +1,9 @@
 "use server";
 import { setCookie } from "cookies-next";
 import { redirect } from "next/navigation";
-
+import { cookies } from "next/headers";
 const { Expired_time, BASE_URL } = require("./utils");
+
 
 function ISValidEmail(email) {
    return /^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,}$/.test(email);
@@ -13,49 +14,53 @@ function ISValidPassword(password) {
 }
 // login-form.jsx
 async function handleLogin({ email, password }) {
- 
   // ######### Validation #########
-
   if (!ISValidEmail(email)) {
-    return { email: "Email is not valid" };
+    // Handle invalid email
+    return { status: 400, message: "Email is not valid" };
   }
   if (ISValidPassword(password)) {
+    // Handle invalid password
     return {
-      password:
-        "Password is not valid must have at least one Uppercase & lowercase ",
+      status: 400,
+      message: "Password must have at least one uppercase, one lowercase, and one number",
     };
   }
+
   // ######### Post Actions #########
-  else {
-    let redirectPath;
-    try {
-      const response = await fetch(BASE_URL + "/hr/employees/", {
-        method: "POST",
-        headers: {
-          "Content-Type": "application/json",
-        },
-        body: JSON.stringify({ email, password }),
-      });
-      const data = await response.json();
-      if (response.status === 200) {
-        setCookie("token", data?.token, { cookies }, Expired_time);
-        redirectPath = `/`;
-        return { success: "User created successfully" };
-      } else if (response.status === 400) {
-        return { email: data?.email , password: data?.password };
-      }else if (response.status === 401) {
-        return { message: data?.detail };
-      } else {
-        return { message: "Something went wrong please try again later" };
-      }
-    } catch (error) {
-      console.log("Error", error);
-      return { message: error.message || "An error occurred" };
-    } finally {
-      if (redirectPath) {
-        redirect(redirectPath);
-      }
+  let redirectPath;
+  try {
+    const response = await fetch(BASE_URL + "/dashboard/login/", {
+      method: "POST",
+      headers: {
+        "Content-Type": "application/json",
+      },
+      body: JSON.stringify({ email, password }),
+    });
+    const data = await response.json();
+
+    if (response.status === 200) {
+      setCookie("token", data?.token, { cookies }, Expired_time);
+      redirectPath = `/`;
+      return { success: "User logged in successfully" };  // This will be used for success
+    } else if (response.status === 400) {
+      return {
+        status: 400,
+        message: data.error,
+      };
+    } else if (response.status === 401) {
+      return { message: data?.detail };
+    } else {
+      return { message: "Something went wrong, please try again later" };
+    }
+  } catch (error) {
+    console.log("Error", error);
+    return { message: error.message || "An error occurred" };
+  } finally {
+    if (redirectPath) {
+      redirect(redirectPath);
     }
   }
 }
+
 export { handleLogin };

@@ -12,6 +12,8 @@ import {
 import {
   ArrowUpDown,
   ChevronDown,
+  EllipsisVertical,
+  Image,
   Loader,
   MoreHorizontal,
   PencilLine,
@@ -45,6 +47,7 @@ export function DataTableDemo({
   columns = [],
   onDelete = () => {},
   onEdit = () => {},
+  onView = () => {},
   onPagination = false,
   onSearch = false,
 }) {
@@ -178,7 +181,7 @@ export function DataTableDemo({
                           {onDelete && (
                             <Trash2 size={20} strokeWidth={1.5} onClick={() => onDelete(row.original)} />
                           )}
-                          
+                          {onView && (<EllipsisVertical size={20} strokeWidth={1.5} onClick={() => onView(row.original)}/>)}
                         </div>
                       ) : cell.column.columnDef.id === "select" ? (
                         <Checkbox
@@ -188,7 +191,12 @@ export function DataTableDemo({
                           }
                           aria-label="Select row"
                         />
-                      ) : (
+                      ) :cell.column.columnDef.id === "image"?(
+                        // eslint-disable-next-line jsx-a11y/alt-text
+                        <Image color="#BF9E5C" onClick={()=>{
+                          window.open(cell.row.original.image)
+                        }} />
+                      ): (
                         flexRender(
                           cell.column.columnDef.cell,
                           cell.getContext()

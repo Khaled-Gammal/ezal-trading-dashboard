@@ -9,3 +9,13 @@ export let Expired_time = {
 export function cn(...inputs) {
   return twMerge(clsx(inputs));
 }
+
+export function compareData  (originalData, updatedData){
+  const changes = {};
+  Object.keys(originalData).forEach(key => {
+    if (originalData[key] !== updatedData[key]) {
+      changes[key] = updatedData[key];
+    }
+  });
+  return changes;
+};

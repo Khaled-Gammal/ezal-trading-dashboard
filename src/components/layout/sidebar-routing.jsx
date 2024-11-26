@@ -1,3 +1,5 @@
+import { act } from "react";
+
 const {
   LayoutDashboard,
   ContactRound,
@@ -45,10 +47,20 @@ export let PageRoutes = [
   },
   {
     title: "Employees",
-    path: "/employees",
     icon: <Users />,
     active: "employees",
-    children: [],
+    children: [
+      {
+        title: "Instructors",
+        path: "/employees/instructors",
+        active: "instructors",
+      },
+      {
+        title: "Other Employees",
+        path: "/employees/other-employees",
+        active: "employees",
+      },
+    ],
   },
   {
     title: "Groups",

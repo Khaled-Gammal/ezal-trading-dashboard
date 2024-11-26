@@ -16,6 +16,7 @@ export function TimePickerDemo({
   placeholder = "Pick a date",
   value,
   onChange,
+  disabled = false,
   id,
 }) {
 
@@ -29,8 +30,9 @@ export function TimePickerDemo({
       )}
 
       <Dialog className="w-full">
-        <DialogTrigger asChild>
+        <DialogTrigger asChild disabled={disabled}>
           <Button
+            disabled={disabled}
             variant={"outline"}
             className={cn(
               "w-full justify-between text-left font-normal",

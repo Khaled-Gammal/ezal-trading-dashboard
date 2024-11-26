@@ -4,7 +4,7 @@ import { Camera } from "lucide-react"
 import Image from "next/image"
 import { useRef } from "react"
 
-export default function ImagePicker({ value, onChange, error }) {
+export default function ImagePicker({ value, onChange, error , disabled=false }) {
     const inputRef = useRef() 
 
     const handleClick = () => {
@@ -24,6 +24,7 @@ export default function ImagePicker({ value, onChange, error }) {
             onClick={handleClick}
         >
             <input 
+                disabled={disabled}
                 type='file'
                 ref={inputRef}
                 style={{ display: 'none' }}

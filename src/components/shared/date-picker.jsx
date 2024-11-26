@@ -15,6 +15,7 @@ export function DatePickerDemo({
   placeholder = "Pick a date",
   value,
   onChange,
+  disabled = false,
   id,
 }) {
   return (
@@ -28,6 +29,7 @@ export function DatePickerDemo({
       <Dialog className="w-full">
         <DialogTrigger asChild>
           <Button
+            disabled={disabled}
             variant={"outline"}
             className={cn(
               "w-full justify-between text-left font-normal",
@@ -40,6 +42,7 @@ export function DatePickerDemo({
         </DialogTrigger>
         <DialogContent className="w-auto p-4">
           <Calendar
+            disabled={disabled}
             mode="single"
             selected={value}
             onSelect={onChange} 

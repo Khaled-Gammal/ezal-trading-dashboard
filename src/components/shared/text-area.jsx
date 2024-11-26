@@ -10,6 +10,7 @@ export default function TextAreaField({
     className,
     error,
     name,
+    disabled=false,
 }) {
   return (
     <div className={className}>
@@ -19,6 +20,7 @@ export default function TextAreaField({
         placeholder={placeholder}
         value={value}
         onChange={onChange}
+        disabled={disabled}
         className={`border  rounded-[6px]  p-2 h-[71px] resize-none ${className} ${
           error ? "border-red-500" : "border"
         }`}

@@ -16,25 +16,23 @@ import {
   DialogTitle,
   DialogTrigger,
 } from "@/components/ui/dialog";
-import { validate } from "@/lib/validation";
-import { Loader2, Plus } from "lucide-react";
-import { useReducer, useState } from "react";
-import { toast } from "sonner";
+import { Plus } from "lucide-react";
+import { useEffect, useReducer, useState } from "react";
 
 const initialValues = {
   loading: false,
-  error: {}, // Error state initialized as an empty object
+  error: null,
   // Initialize with empty values for dynamic fields
 };
 
 const reducer = (state, action) => {
   switch (action.type) {
     case "loading":
-      return { ...state, loading: true, error: {} }; // Clear errors on loading
+      return { ...state, loading: true, error: null };
     case "error":
       return { ...state, loading: false, error: action.payload };
     case "success":
-      return { ...state, loading: false, error: {} }; // Clear errors on success
+      return { ...state, loading: false, error: null };
     case "values":
       return { ...state, ...action.payload }; // Merge new values with the existing state
     default:
@@ -42,61 +40,55 @@ const reducer = (state, action) => {
   }
 };
 
-export const useAddDialog = ({
+export const useViewDialog = ({
   title = "Add Items",
   fields,
   onConfirm = () => {},
 }) => {
+ 
+  const [open, setOpen] = useState(false);
   const [args, setArgs] = useState(null);
+
   const handleOpen = (...params) => {
+    console.log("params",params);
     setArgs([...params]);
+    setOpen(true);
   };
+
+  const handleClose = () => {
+    setOpen(false);
+  };
+ 
 
   const [state, dispatch] = useReducer(reducer, initialValues);
 
-  // Dynamically generate the validation schema for each field
-  const schema = fields.reduce(
-    (acc, field) => ({
-      ...acc,
-      [field.name]: { required: field.required },
-    }),
-    {}
-  );
-
   const handleSubmit = async (e) => {
     e.preventDefault();
-
-    // Validate state against the schema
-    const { valid, errors } = validate(state, schema);
-    if (!valid) {
-      dispatch({ type: "error", payload: errors }); // Set errors in state
-      return;
-    }
-
-    dispatch({ type: "loading" }); // Show loading state during submission
+    dispatch({ type: "loading" }); // Show loading state when submitting
     try {
+      // Submit logic here, e.g., call API
+      console.log("Form submitted with values:", state);
       onConfirm(state); // Call onConfirm callback with form values
       dispatch({ type: "success" }); // Set success state on successful submission
-      toast.success("Item added successfully");
     } catch (error) {
-      dispatch({ type: "error", payload: { global: error.message } }); // Handle error state
-    } finally {
-      dispatch({ type: "loading", payload: false }); // Hide loading state after submission
+      dispatch({ type: "error", payload: error.message }); // Handle error state
     }
   };
 
+  useEffect(() => {
+    
+    if (args) {
+      dispatch({ type: "values", payload:args.reduce((acc, field) => {
+        acc[field.name] = field.value;
+        return acc;
+      }
+      
+      )});
+    }
+  }, [args]);
+console.log(state);
   const dialog = (
-    <Dialog>
-      <DialogTrigger asChild className="mt-[93px]">
-        <div className="flex justify-end items-center ">
-          <Button
-            variant="outline"
-            className="rounded-full bg-primary text-[#fff] h-[39px] w-[39px] flex justify-center"
-          >
-            <Plus size={32} />
-          </Button>
-        </div>
-      </DialogTrigger>
+    <Dialog open={open} onOpenChange={handleClose}>
       <DialogContent className="sm:max-w-[425px]">
         <DialogHeader>
           <DialogTitle className="text-center text-primary text-lg font-medium">
@@ -109,8 +101,8 @@ export const useAddDialog = ({
               field.type === "image" ? (
                 <div className="mb-2" key={field.id}>
                   <ImagePicker
+                    disabled={field.disabled}
                     value={state[field.name]}
-                    error={state.error[field.name]}
                     onChange={(value) => {
                       dispatch({
                         type: "values",
@@ -125,8 +117,10 @@ export const useAddDialog = ({
                   id={field.id}
                   label={field.label}
                   placeholder={field.placeholder}
-                  error={state.error[field.name]} // Display individual field error
+                  error={state.error}
+                  view={field.view}
                   value={state[field.name] || ""}
+                  disabled={field.disabled}
                   options={field.options}
                   onChange={(value) => {
                     dispatch({
@@ -141,6 +135,7 @@ export const useAddDialog = ({
                   label={field.label}
                   placeholder={field.placeholder}
                   value={state[field.name]}
+                  disabled={field.disabled}
                   onChange={(value) => {
                     dispatch({
                       type: "values",
@@ -153,6 +148,7 @@ export const useAddDialog = ({
                   id={field.id}
                   label={field.label}
                   placeholder={field.placeholder}
+                  disabled={field.disabled}
                   value={state[field.name]}
                   onChange={(value) => {
                     dispatch({
@@ -168,7 +164,8 @@ export const useAddDialog = ({
                     id={field.id}
                     label={field.label}
                     placeholder={field.placeholder}
-                    error={state.error[field.name]} // Display individual field error
+                    error={state.error}
+                    disabled={field.disabled}
                     value={state[field.name] || ""}
                     onChange={(e) => {
                       dispatch({
@@ -178,28 +175,28 @@ export const useAddDialog = ({
                     }}
                   />
                 </div>
-              ) : field.type === "file" ? (
-                <DragFile
-                  id={field.id}
-                  label={field.label}
-                  name={field.name}
-                  type={field.upload}
-                  value={state[field.name]}
-                  onChange={(value) => {
-                    dispatch({
-                      type: "values",
-                      payload: { [field.name]: value },
-                    });
-                  }}
-                />
-              ) : field.type === "phone" ? (
+              ) :field.type==="file"?
+              <DragFile
+              id={field.id}
+              label={field.label}
+              name={field.name}
+              type={field.upload}
+              value={state[field.name]}
+              onChange={(value) => {
+                dispatch({
+                  type: "values",
+                  payload: { [field.name]: value },
+                });
+              }}
+              />
+              :field.type === "phone" ? (
                 <PhoneInput
                   name={field.name}
                   id={field.id}
                   label={field.label}
                   placeholder={field.placeholder}
                   value={state[field.name]}
-                  error={state.error[field.name]} 
+                  disabled={field.disabled}
                   onChange={(value) => {
                     dispatch({
                       type: "values",
@@ -208,15 +205,15 @@ export const useAddDialog = ({
                   }}
                 />
               ) : (
-                <div className="w-full" key={field.id}>
+                <div className=" w-full" key={field.id}>
                   <InputField
                     name={field.name}
                     type={field.type}
                     id={field.id}
                     label={field.label}
                     placeholder={field.placeholder}
-                    required={field.required}
-                    error={state.error[field.name]} // Display individual field error
+                    error={state.error}
+                    disabled={field.disabled}
                     value={state[field.name] || ""}
                     onChange={(e) => {
                       dispatch({
@@ -229,7 +226,8 @@ export const useAddDialog = ({
               )
             )}
           </div>
-          <DialogFooter className="flex items-center justify-between gap-6 md:gap-[60px] ">
+          {/* Dialog footer */}
+          {/* <DialogFooter className="flex items-center justify-between gap-6 md:gap-[60px] ">
             <DialogClose asChild>
               <Button className={"cancel-button w-full"} variant="outline">
                 Cancel
@@ -238,18 +236,11 @@ export const useAddDialog = ({
             <Button
               className={"confirm-button w-full"}
               type="submit"
-              disabled={state?.loading}
+              disabled={state.loading}
             >
-              {state?.loading ? (
-                <>
-                  <Loader2 className="animate-spin" />
-                  Please wait...
-                </>
-              ) : (
-                "Add"
-              )}
+              {state.loading ? "Loading..." : "Add"}
             </Button>
-          </DialogFooter>
+          </DialogFooter> */}
         </form>
       </DialogContent>
     </Dialog>

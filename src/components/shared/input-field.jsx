@@ -12,6 +12,7 @@ function InputField({
   className,
   error,
   name,
+  disabled=false,
   id,
 }) {
   const labelRef = useRef(null);
@@ -44,6 +45,7 @@ function InputField({
         placeholder={placeholder}
         value={value}
         onChange={onChange}
+        disabled={disabled}
         onFocus={handleFocus}
         onBlur={handleBlur}
         className={`border rounded-[6px] p-2 ${className} ${

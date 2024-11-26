@@ -68,6 +68,7 @@ PhoneInput.displayName = "PhoneInput";
 const InputComponent = React.forwardRef(
   ({ className, ...props }, ref) => (
     <Input
+    disabled={props.disabled}
       className={cn("rounded-e-lg rounded-s-none w-full", className)}
       {...props}
       ref={ref}
