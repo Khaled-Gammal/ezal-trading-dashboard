@@ -16,7 +16,7 @@ export default function ImagePicker({ value, onChange, error , disabled=false })
         onChange(image)
     }
 
-    console.log(error);
+    const isValidFile = value instanceof Blob || value instanceof File;
 
     return (
         <div 
@@ -31,8 +31,8 @@ export default function ImagePicker({ value, onChange, error , disabled=false })
                 onChange={handleChange}
             />
             {
-                value ?
-                <Image src={URL.createObjectURL(value)} alt='image' height={70} width={70} className='h-[70px] w-[70px] rounded-full object-cover' />
+                isValidFile ?
+                <Image src={URL?.createObjectURL(value)} alt='image' height={70} width={70} className='h-[70px] w-[70px] rounded-full object-cover' />
                 :
                 <Camera size={32} color="#606060" strokeWidth={0.75}  />
             }

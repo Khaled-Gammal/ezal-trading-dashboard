@@ -3,15 +3,21 @@ import { DataTableDemo } from "@/components/shared/table-data";
 import { useAddDialog } from "@/hooks/custom-dialog";
 import { useEditDialog } from "@/hooks/custom-edit-dialog";
 import { useConfirmMessage } from "@/hooks/delete-dialog";
+import { addInstructorFields, editInstructorFields, viewInstructorFields } from "./constant-data";
+import { handleUpdateInServer } from "@/lib/actions/patch-server";
+import { handleDeleteRow } from "@/lib/actions/delete-server";
+import { compareData } from "@/lib/utils";
+import { toast } from "sonner";
+import { useViewDialog } from "@/hooks/custom-view-dialog";
 
 export default function InstructorsDataTable({ instructors }) {
-  console.log("instructors", instructors);
+ console.log("instructors=>", instructors);
   const columns = [
     {
       id: "select",
       header: "",
       className: "text-center",
-      accessorKey: "select",
+      accessorKey: "instructor_id",
     },
     {
       id: "full_name",
@@ -52,7 +58,7 @@ export default function InstructorsDataTable({ instructors }) {
       id: "status",
       header: "Status",
       accessorKey: "status",
-      className: "text-center text-[#BF9E5C]",
+      className: "text-center",
     },
     {
       id: "actions",
@@ -67,9 +73,9 @@ export default function InstructorsDataTable({ instructors }) {
       full_name: instructor.user.full_name,
       email: instructor.user.email,
       phone_number: instructor.user.phone_number,
-      age: instructor.age,
-      gender: instructor.gender,
-      groups: instructor.groups.map((group) => group.group_name).join(", "),
+      age: instructor.user.age,
+      gender: instructor.user.gender,
+      groups: instructor.groups.map((group) => group.group_name).join("/ "),
       departments: instructor.departments
         .map((department) => department.department_name)
         .join(", "),
@@ -77,126 +83,66 @@ export default function InstructorsDataTable({ instructors }) {
       status: instructor.user.is_active === true ? "Active" : "Un Active",
     };
   });
-  const addInstructorFields = [
-    {
-      id: "image",
-      name: "image", // Add `name` here to match state
-      label: "Employee Image",
-      placeholder: "Upload your image",
-      type: "image",
-      required: true,
-    },
-    {
-      id: "name",
-      name: "name", // Add `name` here to match state
-      label: "Employee Name",
-      placeholder: "Enter your name",
-      type: "text",
-      required: true,
-    },
-    {
-      id: "courses",
-      name: "courses", // Add `name` here to match state
-      label: "Courses Name",
-      placeholder: "select your courses",
-      type: "selected",
-      options: ["Tagweed", "Quran", "Tafseer"],
-      required: true,
-    },
-    {
-      id: "groups",
-      name: "groups", // Add `name` here to match state
-      label: "Groups Number",
-      placeholder: "select your groups",
-      type: "selected",
-      options: ["G9", "G3", "G2"],
-      required: true,
-    },
-    {
-      id: "phone",
-      name: "phone", // Add `name` here to match state
-      label: "Phone Number",
-      placeholder: "Enter your phone number",
-      type: "phone",
-      required: true,
-    },
-    {
-      id: "email",
-      name: "email", // Add `name` here to match state
-      label: "E-mail address",
-      placeholder: "Enter your email",
-      type: "email",
-      required: true,
-    },
-  ];
+ 
 
-  const editInstructorFields = [
-    {
-      id: "name",
-      name: "name", // Add `name` here to match state
-      label: "Employee Name",
-      placeholder: "Enter your name",
-      type: "text",
-      required: true,
-    },
-    {
-      id: "email",
-      name: "email", // Add `name` here to match state
-      label: "E-mail address",
-      placeholder: "Enter your email",
-      type: "email",
-      required: true,
-    },
-    {
-      id: "phone",
-      name: "phone", // Add `name` here to match state
-      label: "Phone Number",
-      placeholder: "Enter your phone number",
-      type: "phone",
-      required: true,
-    },
-    {
-      id: "courses",
-      name: "courses", // Add `name` here to match state
-      label: "Courses Name",
-      placeholder: "select your courses",
-      type: "selected",
-      options: ["Tagweed", "Quran", "Tafseer"],
-    },
-    {
-      id: "groups",
-      name: "groups", // Add `name` here to match state
-      label: "Groups Number",
-      placeholder: "select your groups",
-      type: "selected",
-      options: ["G9", "G3", "G2"],
-    },
-    {
-      id: "phone",
-      name: "phone", // Add `name` here to match state
-      label: "Phone Number",
-      placeholder: "Enter your phone number",
-      type: "tel",
-    },
-  ];
+  // add instructor dialog
   const [handleAddInstructor, addInstructorConfirmDialog] = useAddDialog({
     onConfirm: (state) => console.log("Add", state),
     title: "Add a New Instructor",
     fields: addInstructorFields,
   });
+
+  // edit instructor dialog
   const [handleEditInstructor, editEmployeeConfirmDialog] = useEditDialog({
     onConfirm: (state) => handleEditInstructors(state),
-    title: "Add a New Instructor",
+    title: "Edit an Instructor",
     fields: editInstructorFields,
   });
 
+  // delete instructor dialog
   const [handleDelete, deleteComponentConfirmDialog] = useConfirmMessage({
-    onConfirm: async (id) => console.log("Delete", id),
+    onConfirm: (row) => handleDeleteRow("/dashboard/instructors/",row?.id,"/employees/instructors"),
     text: "Do you sure you wanna to delete this Instructor ? ",
     title: "Delete Instructor",
+    successMessage: "You have successfully deleted the instructor",
   });
+
+  // view instructor dialog
+  const [handleViewInstructor, viewInstructorConfirmDialog] = useViewDialog({
+    // onConfirm: (state) => handleEditCurrentStudent(state),
+    title: "Instructor's Profile",
+    fields: viewInstructorFields,
+  });
+
   const handleEditInstructors = (state) => {
-    console.log("Edit", id);
+    try {
+      instructorsData.forEach(async (row) => {
+        if (row.id === state.id) {
+          const changes = compareData(row, state);
+          if (Object.keys(changes).length > 0) {
+            console.log("changes=>", changes);
+            // Call the API to update the student
+            const formData=changes
+            const response = await handleUpdateInServer(
+              `/dashboard/instructors/${row?.id}/`,
+              "PATCH",
+              formData,
+              true,
+              "object",
+              "/employees/instructors"
+            );
+            if (response.success) {
+            toast.success(response.success);
+            console.log("Update response=>", response);
+            }else {
+              toast.error(response.error);
+            }
+          }
+        }
+      });
+    } catch (error) {
+      console.error("Error updating instructor:", error);
+    }
   };
 
   return (
@@ -207,10 +153,12 @@ export default function InstructorsDataTable({ instructors }) {
         isPending={false}
         onDelete={handleDelete}
         onEdit={handleEditInstructor}
+        onView={handleViewInstructor}
       />
       {deleteComponentConfirmDialog}
       {editEmployeeConfirmDialog}
       {addInstructorConfirmDialog}
+      {viewInstructorConfirmDialog}
     </div>
   );
 }

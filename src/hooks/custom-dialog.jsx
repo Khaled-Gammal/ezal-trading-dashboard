@@ -77,7 +77,6 @@ export const useAddDialog = ({
     try {
       onConfirm(state); // Call onConfirm callback with form values
       dispatch({ type: "success" }); // Set success state on successful submission
-      toast.success("Item added successfully");
     } catch (error) {
       dispatch({ type: "error", payload: { global: error.message } }); // Handle error state
     } finally {

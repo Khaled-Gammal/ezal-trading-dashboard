@@ -1,12 +1,16 @@
 
 import EmployeesDataTable from "@/data/employees/other-employees/OtherEmployeesDataTable";
-import { PRODUCTION_URL } from "@/lib/utils";
+import { GetDataInServerSide } from "@/lib/actions/get-server";
+
 
 export default async function EmployeesPage() {
-  
+
+  const admins = await GetDataInServerSide(
+    '/dashboard/admins/'
+  )
   return (
       <div>
-       <EmployeesDataTable />
+       <EmployeesDataTable admins={admins}/>
       </div>
     )
   }

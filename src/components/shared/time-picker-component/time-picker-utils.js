@@ -115,6 +115,11 @@ export function isValidHour(value) {
   }
   
   export function getDateByType(date, type) {
+    // Ensure date is a Date object
+    if (!(date instanceof Date)) {
+      date = new Date(date);
+    }
+  
     switch (type) {
       case "minutes":
         return getValidMinuteOrSecond(String(date.getMinutes()));

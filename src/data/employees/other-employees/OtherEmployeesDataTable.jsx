@@ -3,21 +3,32 @@ import { DataTableDemo } from "@/components/shared/table-data";
 import { useAddDialog } from "@/hooks/custom-dialog";
 import { useEditDialog } from "@/hooks/custom-edit-dialog";
 import { useConfirmMessage } from "@/hooks/delete-dialog";
+import { addEmployFields, editEmployFields, viewEmployeeFields } from "./constant-data";
+import { handleUpdateInServer } from "@/lib/actions/patch-server";
+import { compareData } from "@/lib/utils";
+import { toast } from "sonner";
+import { handleDeleteRow } from "@/lib/actions/delete-server";
+import { useViewDialog } from "@/hooks/custom-view-dialog";
+import { handlePostInServer } from "@/lib/actions/post-server";
 
 
-export default function EmployeesDataTable({employees}) {
+export default function EmployeesDataTable({admins}) {
+// columns for the table
   const columns = [
     {
         id: "select",
         header: "",
         className: "text-center",
-        accessorKey: "select",
-
+        accessorKey: "id",
     },
     {
-      id: "name",
+      id: "full_name",
       header: "Employee Name",
-      accessorKey: "name",
+      accessorKey: "full_name",
+    },{
+      id:"section",
+      header:"Section",
+      accessorKey:"section"
     },
     {
       id: "email",
@@ -25,13 +36,13 @@ export default function EmployeesDataTable({employees}) {
       accessorKey: "email",
     },
     {
-      id: "phone",
+      id: "phone_number",
       header: "Phone Number",
-      accessorKey: "phone",
+      accessorKey: "phone_number",
     },{
-      id: "courses",
-      header: "Assigned Sections",
-      accessorKey: "courses",
+      id: "gender",
+      header: "Gender",
+      accessorKey: "gender",
     },
     {
       id: "status",
@@ -39,9 +50,9 @@ export default function EmployeesDataTable({employees}) {
       accessorKey: "status",
     },
     {
-      id: "performance",
-      header: "Performance",
-      accessorKey: "performance",
+      id: "image",
+      header: "Image",
+      accessorKey: "image",
     },
     {
       id: "actions",
@@ -50,258 +61,122 @@ export default function EmployeesDataTable({employees}) {
       className: "text-center",
     },
   ];
-  const data = [
-   {
-    name: "Nouran Hossam",
-    email: "nouran@gmail.com",
-    phone:"010136784931",
-    courses: "Tagweed",
-    groups:"G9",
-    status: "Active",
-    performance: "93%",
-   },
-   {
-    name: "Nouran Hossam",
-    email: "nouran@gmail.com",
-    phone:"010136784931",
-    courses: "Tagweed",
-    groups:"G9",
-    status: "Active",
-    performance: "93%",
-   },
-   {
-    name: "Nouran Hossam",
-    email: "nouran@gmail.com",
-    phone:"010136784931",
-    courses: "Tagweed",
-    groups:"G9",
-    status: "Active",
-    performance: "93%",
-   },
-   {
-    name: "Nouran Hossam",
-    email: "nouran@gmail.com",
-    phone:"010136784931",
-    courses: "Tagweed",
-    groups:"G9",
-    status: "Active",
-    performance: "93%",
-   },
-   {
-    name: "Nouran Hossam",
-    email: "nouran@gmail.com",
-    phone:"010136784931",
-    courses: "Tagweed",
-    groups:"G9",
-    status: "Active",
-    performance: "93%",
-   },
-   {
-    name: "Nouran Hossam",
-    email: "nouran@gmail.com",
-    phone:"010136784931",
-    courses: "Tagweed",
-    groups:"G9",
-    status: "Active",
-    performance: "93%",
-   },
-   {
-    name: "Nouran Hossam",
-    email: "nouran@gmail.com",
-    phone:"010136784931",
-    courses: "Tagweed",
-    groups:"G9",
-    status: "Active",
-    performance: "93%",
-   },{
-    name: "Nouran Hossam",
-    email: "nouran@gmail.com",
-    phone:"010136784931",
-    courses: "Tagweed",
-    group:"G9",
-    status: "Active",
-    performance: "93%",
-   },
-   {
-    name: "Nouran Hossam",
-    email: "nouran@gmail.com",
-    phone:"010136784931",
-    courses: "Tagweed",
-    groups:"G9",
-    status: "Active",
-    performance: "93%",
-   },
-   {
-    name: "Nouran Hossam",
-    email: "nouran@gmail.com",
-    phone:"010136784931",
-    courses: "Tagweed",
-    groups:"G9",
-    status: "Active",
-    performance: "93%",
-   },
-   {
-    name: "Nouran Hossam",
-    email: "nouran@gmail.com",
-    phone:"010136784931",
-    courses: "Tagweed",
-    groups:"G9",
-    status: "Active",
-    performance: "93%",
-   },
-   {
-    name: "Nouran Hossam",
-    email: "nouran@gmail.com",
-    phone:"010136784931",
-    courses: "Tagweed",
-    groups:"G9",
-    status: "Active",
-    performance: "93%",
-   },
-   {
-    name: "Nouran Hossam",
-    email: "nouran@gmail.com",
-    phone:"010136784931",
-    courses: "Tagweed",
-    groups:"G9",
-    status: "Active",
-    performance: "93%",
-   },
-  ];
-  const addEmployFields = [
-    {
-      id:'image',
-      name: "image",  // Add `name` here to match state
-      label: "Employee Image",
-      placeholder: "Upload your image",
-      type: "image",
-      required: true,
-    },
-    {
-      id: "name",
-      name: "name",  // Add `name` here to match state
-      label: "Employee Name",
-      placeholder: "Enter your name",
-      type: "text",
-      required: true,
-    },{
-      id:"courses",
-      name: "courses",  // Add `name` here to match state
-      label: "Courses Name",
-      placeholder: "select your courses",
-      type: "selected",
-      options: ["Tagweed", "Quran", "Tafseer"],
-      required: true,
-    },
-    {
-      id:"groups",
-      name: "groups",  // Add `name` here to match state
-      label: "Groups Number",
-      placeholder: "select your groups",
-      type: "selected",
-      options: ["G9", "G3", "G2"],
-      required: true,
-    },
-    {
-      id: "phone",
-      name: "phone",  // Add `name` here to match state
-      label: "Phone Number",
-      placeholder: "Enter your phone number",
-      type: "phone",
-      required: true,
-    },
-    {
-      id: "email",
-      name: "email",  // Add `name` here to match state
-      label: "E-mail address",
-      placeholder: "Enter your email",
-      type: "email",
-      required: true,
-    },
-  ];
-  
-  const editEmployFields = [
-    {
-      id: "name",
-      name: "name",  // Add `name` here to match state
-      label: "Employee Name",
-      placeholder: "Enter your name",
-      type: "text",
-      required: true,
-    },
-    {
-      id: "email",
-      name: "email",  // Add `name` here to match state
-      label: "E-mail address",
-      placeholder: "Enter your email",
-      type: "email",
-      required: true,
-    },
-    {
-      id:"phone",
-      name: "phone",  // Add `name` here to match state
-      label: "Phone Number",
-      placeholder: "Enter your phone number",
-      type: "phone",
-      required: true,
-    },
-    {
-      id:"courses",
-      name: "courses",  // Add `name` here to match state
-      label: "Courses Name",
-      placeholder: "select your courses",
-      type: "selected",
-      options: ["Tagweed", "Quran", "Tafseer"],
-      
-    },
-    {
-      id:"groups",
-      name: "groups",  // Add `name` here to match state
-      label: "Groups Number",
-      placeholder: "select your groups",
-      type: "selected",
-      options: ["G9", "G3", "G2"],
-      
-    },
-    {
-      id: "phone",
-      name: "phone",  // Add `name` here to match state
-      label: "Phone Number",
-      placeholder: "Enter your phone number",
-      type: "tel",
-    },
+
+  // map the data to the columns
+  const adminsData = admins?.results.map((admin) => {  
+    return {
+      id: admin.admin_id,
+      full_name: admin.user.full_name,
+      section: admin.section_name,
+      email: admin.user.email,
+      phone_number: admin.user.phone_number,
+      gender: admin.user.gender,
+      age: admin.user.age,
+      status: admin.user.status===1 ? "Active" : "Inactive",
+      image: admin.user.image,
     
-  ];
+    };
+  }
+  );
+  
+  // Add a new employee dialog
   const [handleAddEmployee, addEmployeeConfirmDialog] = useAddDialog({
-    onConfirm: (state) => console.log("Add",state),
+    onConfirm: (state) => handleAddNewEmployee(state),
     title: "Add a New Employee",
     fields: addEmployFields,
   });
+
+  // Edit employee dialog
   const [handleEditEmployee, editEmployeeConfirmDialog] = useEditDialog({
-    onConfirm: (state) => handleEdit,
-    title: "Add a New Employee",
+    onConfirm: (state) => handleEdit(state),
+    title: "Edit Employee",
     fields: editEmployFields,
   });
 
-  const [handleDelete, deleteComponentConfirmDialog] = useConfirmMessage({
-    onConfirm:  async (id) => console.log("Delete",id),
-    text: "Do you sure you wanna to delete this group ? ",
-    title: "Delete Group",
+  const [handleViewEmployee, viewEmployeeConfirmDialog] = useViewDialog({
+    // onConfirm: (state) => handleEditCurrentStudent(state),
+    title: "Employee's Profile",
+    fields: viewEmployeeFields,
   });
-  const handleEdit = (id) => {
-    console.log("Edit",id);
+
+  // Delete employee dialog
+  const [handleDelete, deleteComponentConfirmDialog] = useConfirmMessage({
+    onConfirm: (row) => handleDeleteRow("/dashboard/admins/",row?.id,"/employees/other-employees"),
+    text: "Do you sure you wanna to delete this employee ? ",
+    title: "Delete Employee",
+  });
+
+  const handleAddNewEmployee = async (state) => {
+    try {
+      const data = {};
+      // Append all keys of state to data except 'loading' and 'error'
+      Object.keys(state).forEach(key => {
+        if (key !== 'loading' && key !== 'error') {
+          data[key] = state[key];
+        }
+      });
+     
+      const response = await handlePostInServer(
+        "/dashboard/create-admin/",
+        JSON.parse(JSON.stringify(data)),
+        "/employees/other-employees",
+        "formData"
+      );
+      console.log(response);
+      if (response.success) {
+        toast.success(response.success);
+      } else {
+        toast.error(response.error);
+      }
+    } catch (error) {
+      console.error("Error adding employee:", error);
+      toast.error("Error adding employee");
+    }
+  };
+  // Handle the edit employee request
+  const handleEdit = (state) => {
+    try {
+      adminsData.forEach(async (row) => {
+        if (row.id === state.id) {
+          const changes = compareData(row, state);
+          if (Object.keys(changes).length > 0) {
+            console.log("changes=>", changes);
+            // Call the API to update the student
+            const formData=changes
+            const response = await handleUpdateInServer(
+              `/dashboard/admins/${row?.id}/`,
+              "PATCH",
+              formData,
+              true,
+              "object",
+              "/employees/other-employees"
+            );
+            if (response.success) {
+            toast.success(response.success);
+            console.log("Update response=>", response);
+            }else {
+              toast.error(response.error);
+            }
+          }
+        }
+      });
+    } catch (error) {
+      console.error("Error updating instructor:", error);
+    }
    
   }
  
   return (
     <div>
-      <DataTableDemo data={data} columns={columns} isPending={false} 
+      <DataTableDemo data={adminsData} columns={columns} isPending={false} 
       onDelete={handleDelete}
       onEdit={handleEditEmployee}
+      onView={handleViewEmployee}
       />
      {deleteComponentConfirmDialog}
      {editEmployeeConfirmDialog}
      {addEmployeeConfirmDialog}
+     {viewEmployeeConfirmDialog}
     </div>
   );
 }

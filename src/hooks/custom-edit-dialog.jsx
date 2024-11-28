@@ -229,7 +229,7 @@ console.log(state);
               type="submit"
               disabled={state.loading}
             >
-              {state.loading ? "Loading..." : "Add"}
+              {state.loading ? "Loading..." : "Save"}
             </Button>
           </DialogFooter>
         </form>

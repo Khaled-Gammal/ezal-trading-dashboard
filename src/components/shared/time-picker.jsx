@@ -39,7 +39,7 @@ export function TimePickerDemo({
               !value && "text-muted-foreground"
             )}
           >
-            {value ? format(value, "PPPp") : <span>{placeholder}</span>}
+             {value && !isNaN(new Date(value).getTime()) ? format(new Date(value), "PPPp") : <span>{placeholder}</span>}
             <CalendarIcon className="mr-2 h-4 w-4" />
           </Button>
         </DialogTrigger>

@@ -6,7 +6,7 @@ import { revalidatePath } from "next/cache";
 
 export async function handleDeleteRow(End_Point, id, path) {
     let redirectPath;
-
+  console.log(id, "id=>", End_Point, "End_Point=>", path, "path=>");
     try {
       const response = await fetch(BASE_URL + End_Point + id + "/", {
         method: "DELETE",
@@ -15,6 +15,7 @@ export async function handleDeleteRow(End_Point, id, path) {
           Authorization: hasCookie("token", { cookies }) ? `Token ${getCookie("token", { cookies })}` : getCookie("session", { cookies }),
         },
       });
+      console.log("response=>", response);
       let data = {};
       if (response.status !== 204) {
         // 204 No Content

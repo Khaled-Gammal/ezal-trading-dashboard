@@ -1,14 +1,26 @@
+'use server';
 import { getCookie } from "cookies-next";
 import { BASE_URL } from "../utils";
+import { cookies } from "next/headers";
+import { revalidatePath } from "next/cache";
 
-export async function handlePostInServer(End_Point, data) {
+export async function handlePostInServer(End_Point,data,path,dataType = "formData") {
+console.log(End_Point, "End_Point=>", path, "path=>", data, "data=>",dataType,"dataType=>");
+     const formData = new FormData();
     try {
+      if (dataType === "formData") {
+        for (let key in data) {
+          formData.append(key, data[key]);
+        }
+    }
+
+    console.log("data=> ", data,formData);
       const response = await fetch(BASE_URL + End_Point, {
         method: "POST",
-        body: JSON.stringify(data),
+        body:dataType === "formData" ? formData : data,
         headers: {
-          "Content-Type": "application/json",
-          Authorization: `Bearer ${getCookie("token", { cookies })}`,
+          
+          Authorization: `Token ${getCookie("token", { cookies })}`,
         },
       });
   
@@ -16,10 +28,10 @@ export async function handlePostInServer(End_Point, data) {
       console.log(res);
   
       if (response.ok) {
-        revalidatePath("page");
+        revalidatePath(path);
         return {
-          success: "Items Added successfully",
-          data: res,
+          success: res.message || "Item added successfully",
+          data: res.data,
         };
       } else if (response.status === 403) {
         return {

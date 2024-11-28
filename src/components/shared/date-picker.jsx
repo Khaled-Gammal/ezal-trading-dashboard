@@ -1,7 +1,7 @@
 "use client";
 
 import * as React from "react";
-import { format } from "date-fns";
+import { format, parseISO } from "date-fns"; // Added parseISO for string-to-Date conversion
 import { Calendar as CalendarIcon } from "lucide-react";
 
 import { cn } from "@/lib/utils";
@@ -18,6 +18,16 @@ export function DatePickerDemo({
   disabled = false,
   id,
 }) {
+  // Ensure `value` is a Date object for the Calendar
+  const selectedDate = value ? parseISO(value) : undefined;
+
+  const handleChange = (date) => {
+    if (date) {
+      const formattedDate = format(date, "yyyy-MM-dd");
+      onChange(formattedDate); // Pass formatted string to parent
+    }
+  };
+
   return (
     <div className="w-full">
       {label && (
@@ -36,7 +46,7 @@ export function DatePickerDemo({
               !value && "text-muted-foreground"
             )}
           >
-            {value ? format(value, "PPP"): <span>{placeholder}</span>}
+            {value || <span>{placeholder}</span>}
             <CalendarIcon className="mr-2 h-4 w-4" />
           </Button>
         </DialogTrigger>
@@ -44,8 +54,8 @@ export function DatePickerDemo({
           <Calendar
             disabled={disabled}
             mode="single"
-            selected={value}
-            onSelect={onChange} 
+            selected={selectedDate} // Pass Date object to Calendar
+            onSelect={handleChange} // Handle date selection
             initialFocus
           />
         </DialogContent>

@@ -1,14 +1,16 @@
 
 import SessionsDataTable from "@/data/sessions/SessionsDataTable";
+import { GetDataInServerSide } from "@/lib/actions/get-server";
 import { PRODUCTION_URL } from "@/lib/utils";
 
 export default async function SessionsPage() {
-  const res=await fetch(`http://localhost:3000/api/employees/`)
-  const data=res.json()
-console.log(data);
+  const sessions = await GetDataInServerSide(
+    '/dashboard/live-sessions/'
+ )
+
   return (
       <div>
-       <SessionsDataTable />
+       <SessionsDataTable sessions={sessions}/>
       </div>
     )
   }

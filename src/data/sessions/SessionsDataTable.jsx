@@ -3,27 +3,40 @@ import { DataTableDemo } from "@/components/shared/table-data";
 import { useAddDialog } from "@/hooks/custom-dialog";
 import { useEditDialog } from "@/hooks/custom-edit-dialog";
 import { useConfirmMessage } from "@/hooks/delete-dialog";
+import moment from "moment";
+import { addSessionFields, editSessionFields, viewSessionFields } from "./constant-data";
+import { useViewDialog } from "@/hooks/custom-view-dialog";
+import { handleDeleteRow } from "@/lib/actions/delete-server";
 
 
 export default function SessionsDataTable({sessions}) {
+
+  console.log(sessions);
+  // columns for the table
   const columns = [
     
     {
       id: "id",
       header: "Session Name",
-      accessorKey: "id",
+      accessorKey: "title",
       className: "text-left",
     },
     {
-      id: "department",
-      header: "Department Name ",
-      accessorKey: "department",
-      
+      id:"department",
+      header:"Department Name",
+      accessorKey:"department_title",
+      className: "text-center",
     },
     {
-      id: "instructor",
+      id: "group_name",
+      header: "Group Name ",
+      accessorKey: "group_name",
+      className: "text-center",
+    },
+    {
+      id: "instructor_name",
       header: "Group Instructor",
-      accessorKey: "instructor",
+      accessorKey: "instructor_name",
     },
     {
       id: "date",
@@ -35,7 +48,11 @@ export default function SessionsDataTable({sessions}) {
       header: "Time",
       accessorKey: "time",
     },
-    
+    {
+      id: "session_type",
+      header: "Session Type",
+      accessorKey: "session_type",
+    },
     {
       id: "actions",
       header: "Actions",
@@ -43,169 +60,42 @@ export default function SessionsDataTable({sessions}) {
       className: "text-center",
     },
   ];
-  const data = [
-    {
-      id: 1,
-      department: "G9",
-      instructor: "Ahmed Mohamed",
-      date: "19 - 08 - 2024",
-      time:"09 : 00 AM",
-    },
-    {
-      id: 2,
-      department: "G10",
-      instructor: "Mohamed Ahmed",
-      date: "19 - 08 - 2024",
-      time:"09 : 00 AM",
-    },
-    {
-      id: 3,
-      department: "G11",
-      instructor: "Ali Mohamed",
-      date: "19 - 08 - 2024",
-      time:"09 : 00 AM",
-    },
-    {
-      id: 4,
-      department: "G12",
-      instructor: "Ali Ahmed",
-      date: "19 - 08 - 2024",
-      time:"09 : 00 AM",
-    },
-    {
-      id: 5,
-      department: "G13",
-      instructor: "Ahmed Ali",
-      date: "19 - 08 - 2024",
-      time:"09 : 00 AM",
-    },
-    {
-      id: 6,
-      department: "G14",
-      instructor: "Mohamed Ali",
-      date: "19 - 08 - 2024",
-      time:"09 : 00 AM",
-    },
-    {
-      id: 7,
-      department: "G15",
-      instructor: "Ali Ali",
-      date: "19 - 08 - 2024",
-      time:"09 : 00 AM",
-    },
-    {
-      id: 8,
-      department: "G16",
-      instructor: "Ali Ali",
-      date: "19 - 08 - 2024",
-      time:"09 : 00 AM",
-    },
-    {
-      id: 9,
-      department: "G17",
-      instructor: "Ali Ali",
-      date: "19 - 08 - 2024",
-      time:"09 : 00 AM",
-    },
-    {
-      id: 10,
-      department: "G18",
-      instructor: "Ali Ali",
-      date: "19 - 08 - 2024",
-      time:"09 : 00 AM",
-    },
-    
-  ];
-  const addSessionFields = [
-    {
-      id: "session",
-      name: "session",  // Add `name` here to match state
-      label: "Session Name",
-      placeholder: "Enter session name",
-      type: "text",
-    },
-    {
-      id: "department",
-      name: "department",  // Add `name` here to match state
-      label: "Department Name",
-      placeholder: "Select department name",
-      type: "selected",
-      options: ["Quran", "Tafseer", "Tagweed"],
-    },
-    {
-      id:"date",
-      name: "date",  // Add `name` here to match state
-      label: "Session Date",
-      placeholder: "Select session date",
-      type: "date",
 
-    },
-    {
-      id:"time",
-      name: "time",  // Add `name` here to match state
-      label: "Session Time",
-      placeholder: "Select session time",
-      type: "time",
-    },
-    {
-      id: "link",
-      name: "link",  // Add `name` here to match state
-      label: "Session joining Link",
-      placeholder: "Enter session joining Link",
-      type: "text",
+  // data for the table
+  const sessionData=sessions?.results.map((session) => {
+    return {
+      id: session.id,
+      title: session.title,
+      department_title:session?.department_title,
+      group_name:session?.group_name,
+      instructor_name:session?.instructor_name,
+      date: moment(session?.start_time).format("DD-MM-YYYY"),
+      time: moment(session?.start_time).format("hh:mm A"),
+      session_type:session?.session_type,
     }
-  ];
-  const editSessionFields = [
-    {
-      id: "session",
-      name: "session",  // Add `name` here to match state
-      label: "Session Name",
-      placeholder: "Enter session name",
-      type: "text",
-    },
-    {
-      id: "department",
-      name: "department",  // Add `name` here to match state
-      label: "Department Name",
-      placeholder: "Select department name",
-      type: "selected",
-      options: ["Quran", "Tafseer", "Tagweed"],
-    },
-    {
-      id:"date",
-      name: "date",  // Add `name` here to match state
-      label: "Session Date",
-      placeholder: "Select session date",
-      type: "date",
-
-    },
-    {
-      id:"time",
-      name: "time",  // Add `name` here to match state
-      label: "Session Time",
-      placeholder: "Select session time",
-      type: "time",
-    },
-    {
-      id: "link",
-      name: "link",  // Add `name` here to match state
-      label: "Session joining Link",
-      placeholder: "Enter session joining Link",
-      type: "text",
-    }
-  ];
+  });
+ 
+  // edit group dialog
   const [handleEditSession, editSessionConfirmDialog] = useEditDialog({
     onConfirm: (state) => handleEdit,
     title: "Edit Session",
     fields: editSessionFields,
   });
+
+  // add group dialog
   const [handleAddEmployee, addSessionConfirmDialog] = useAddDialog({
     onConfirm: (id) => console.log("Add",id),
     title: "Add a New Session",
     fields: addSessionFields,
   });
+
+  const [handleViewSession, viewSessionConfirmDialog] = useViewDialog({
+    // onConfirm: (state) => handleEditCurrentStudent(state),
+    title: "Session's Details",
+    fields: viewSessionFields,
+  });
   const [handleDelete, deleteComponentConfirmDialog] = useConfirmMessage({
-    onConfirm:  async (id) => console.log("Delete",id),
+    onConfirm: (row) => handleDeleteRow("/dashboard/live-sessions/",row?.id,"/sessions"),
     text: "Do you sure you wanna to delete this session ? ",
     title: "Delete session",
   });
@@ -215,13 +105,15 @@ export default function SessionsDataTable({sessions}) {
  
   return (
     <div>
-      <DataTableDemo data={data} columns={columns} isPending={false} 
+      <DataTableDemo data={sessionData} columns={columns} isPending={false} 
       onDelete={handleDelete}
       onEdit={handleEditSession}
+      onView={handleViewSession}
       />
       {editSessionConfirmDialog}
      {deleteComponentConfirmDialog}
      {addSessionConfirmDialog}
+      {viewSessionConfirmDialog}
     </div>
   );
 }
