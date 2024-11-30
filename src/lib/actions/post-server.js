@@ -17,9 +17,9 @@ console.log(End_Point, "End_Point=>", path, "path=>", data, "data=>",dataType,"d
     console.log("data=> ", data,formData);
       const response = await fetch(BASE_URL + End_Point, {
         method: "POST",
-        body:dataType === "formData" ? formData : data,
+        body:dataType === "formData" ? formData : JSON.stringify(data),
         headers: {
-          
+          // "Content-Type": "application/json",
           Authorization: `Token ${getCookie("token", { cookies })}`,
         },
       });

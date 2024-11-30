@@ -80,6 +80,7 @@ export const useAddDialog = ({
     } catch (error) {
       dispatch({ type: "error", payload: { global: error.message } }); // Handle error state
     } finally {
+      dispatch({type: "values", payload: initialValues}); // Reset form values
       dispatch({ type: "loading", payload: false }); // Hide loading state after submission
     }
   };
@@ -125,6 +126,9 @@ export const useAddDialog = ({
                   label={field.label}
                   placeholder={field.placeholder}
                   error={state.error[field.name]} // Display individual field error
+                  path={field.path}
+                  view={field.view}
+                  renderValue={field.renderValue}
                   value={state[field.name] || ""}
                   options={field.options}
                   onChange={(value) => {

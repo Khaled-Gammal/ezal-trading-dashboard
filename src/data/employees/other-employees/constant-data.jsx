@@ -49,12 +49,19 @@ export const addEmployFields = [
         required: true,
       },
       {
-        id:"section",
+        id:"section_id",
         name: "section_id",  // Add `name` here to match state
         label: "Section",
         placeholder: "select your section",
         type: "selected",
-        options: ["Customer service", "Office", "Management",'1'],
+        path: "/dashboard/sections/",
+        view: "name",
+        options: [],
+        renderValue: ( options) => {
+          console.log(options);
+          // const section = options.find((option) => option.id === value);
+          // return section ? section?.name : "Select your section";
+        },
         required: true,
       },
       {

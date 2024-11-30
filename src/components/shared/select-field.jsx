@@ -15,32 +15,37 @@ function SelectField({
   value,
   onChange,
   label,
-  options = [],
+  options: initialOptions = [],
+  path,
   placeholder = "Select",
   error,
   disabled = false,
   renderValue = () => null,
   view = "name",
 }) {
+  const [options, setOptions] = useState(initialOptions); // Local state for options
   const [loading, setLoading] = useState(false);
-  const path = "hr/employees/";
-const labelRef = useRef(null);
+  
+  const labelRef = useRef(null);
+
   const handleGetData = async () => {
     setLoading(true);
     try {
-      const res = await GetDataInServerSide({ path: path });
-      options = res.data;
+      const res = await GetDataInServerSide(path);
+      console.log(res);
+      setOptions(res?.results || []); // Update the local options state
     } catch (error) {
-      console.log(error);
+      console.error("Error fetching data:", error);
     } finally {
       setLoading(false);
     }
   };
 
   const handleSelectChange = (selectedValue) => {
-    console.log("Selected value: ", selectedValue); // Logs the selected value
-    onChange(selectedValue); // Call onChange to propagate the change
-  };
+    
+    onChange(selectedValue); // Propagate the selected object
+  }
+
   const handleFocus = () => {
     if (labelRef.current) {
       labelRef.current.classList.add("text-primary"); // Apply primary color on focus
@@ -55,7 +60,7 @@ const labelRef = useRef(null);
 
   return (
     <div className="w-full">
-       {label && (
+      {label && (
         <Label
           ref={labelRef}
           htmlFor={id}
@@ -66,7 +71,7 @@ const labelRef = useRef(null);
       )}
       <Select
         id={id}
-         onOpenChange={options.length < 1 ? handleGetData : null}
+        onOpenChange={options.length < 1 ? handleGetData : null}
         value={value}
         onValueChange={handleSelectChange} // Hook into the selection change
         onFocus={handleFocus}
@@ -76,7 +81,7 @@ const labelRef = useRef(null);
       >
         <SelectTrigger className="w-full">
           <SelectValue>
-            {renderValue() ? renderValue() : value ? options.find(opt => opt === value) : placeholder}
+            {renderValue() ? renderValue(options,value) : value ? options.find(opt => opt === value) : placeholder}
           </SelectValue>
         </SelectTrigger>
         <SelectContent>
@@ -86,7 +91,7 @@ const labelRef = useRef(null);
             </SelectItem>
           ) : (
             options?.map((item) => (
-              <SelectItem key={item} value={item}>
+              <SelectItem key={item.id || item} value={item.id||item}>
                 {item[view] ? item[view] : item}
               </SelectItem>
             ))

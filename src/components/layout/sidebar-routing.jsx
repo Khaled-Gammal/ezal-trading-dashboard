@@ -89,6 +89,13 @@ export let PageRoutes = [
     icon: <ClipboardList />,
     active: "tasks",
     children: [],
+  },{
+    title: "Sections",
+    path: "/sections",
+    icon: <GitPullRequest />,
+    active: "sections",
+    children: [],
+
   },
   {
     title: "Reports",

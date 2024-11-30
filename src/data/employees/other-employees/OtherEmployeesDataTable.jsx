@@ -107,6 +107,7 @@ export default function EmployeesDataTable({admins}) {
   });
 
   const handleAddNewEmployee = async (state) => {
+    console.log("state=>", state);
     try {
       const data = {};
       // Append all keys of state to data except 'loading' and 'error'
