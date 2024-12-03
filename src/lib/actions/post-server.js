@@ -19,7 +19,7 @@ console.log(End_Point, "End_Point=>", path, "path=>", data, "data=>",dataType,"d
         method: "POST",
         body:dataType === "formData" ? formData : JSON.stringify(data),
         headers: {
-          // "Content-Type": "application/json",
+           "Content-Type": "application/json",
           Authorization: `Token ${getCookie("token", { cookies })}`,
         },
       });

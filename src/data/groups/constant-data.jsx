@@ -1,3 +1,5 @@
+
+
 export const addGroupFields = [
   {
     id: "group",
@@ -7,13 +9,20 @@ export const addGroupFields = [
     type: "text",
   },
   {
-    id: "instructor",
-    name: "instructor", // Add `name` here to match state
+    id: "instructor_id",
+    name: "instructor_id", // Add `name` here to match state
     label: "Instructor Name",
     placeholder: "Select instructor name",
     type: "selected",
-    options: ["Ali", "Mohamed", "Ahmed"],
-    view: "name",
+    path: "/dashboard/sections/",
+     view: "name",
+    options: [],
+    renderValue: (options) => {
+      console.log(options);
+      // const instructor = options.find((option) => option.id === value);
+      // return instructor ? instructor?.name : "Select your instructor";
+    },
+   
   },
   {
     id: "department",
@@ -21,7 +30,9 @@ export const addGroupFields = [
     label: "Department Name",
     placeholder: "Select department name",
     type: "selected",
-    options: ["Quran", "Tafseer", "Tagweed"],
+    path: "/dashboard/departments/",
+    view: "name",
+    options: [],
   },
 ];
 

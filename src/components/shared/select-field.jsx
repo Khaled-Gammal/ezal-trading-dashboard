@@ -15,7 +15,7 @@ function SelectField({
   value,
   onChange,
   label,
-  options: initialOptions = [],
+  options=[],
   path,
   placeholder = "Select",
   error,
@@ -23,7 +23,6 @@ function SelectField({
   renderValue = () => null,
   view = "name",
 }) {
-  const [options, setOptions] = useState(initialOptions); // Local state for options
   const [loading, setLoading] = useState(false);
   
   const labelRef = useRef(null);
@@ -33,7 +32,9 @@ function SelectField({
     try {
       const res = await GetDataInServerSide(path);
       console.log(res);
-      setOptions(res?.results || []); // Update the local options state
+      if (res) {
+        options = res.data;
+      }
     } catch (error) {
       console.error("Error fetching data:", error);
     } finally {
@@ -81,7 +82,7 @@ function SelectField({
       >
         <SelectTrigger className="w-full">
           <SelectValue>
-            {renderValue() ? renderValue(options,value) : value ? options.find(opt => opt === value) : placeholder}
+          {renderValue() ? renderValue() : value ? options.find(opt => opt === value) : placeholder}
           </SelectValue>
         </SelectTrigger>
         <SelectContent>
@@ -91,7 +92,7 @@ function SelectField({
             </SelectItem>
           ) : (
             options?.map((item) => (
-              <SelectItem key={item.id || item} value={item.id||item}>
+              <SelectItem key={item} value={item.id||item}>
                 {item[view] ? item[view] : item}
               </SelectItem>
             ))

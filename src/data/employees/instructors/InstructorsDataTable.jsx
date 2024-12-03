@@ -9,6 +9,7 @@ import { handleDeleteRow } from "@/lib/actions/delete-server";
 import { compareData } from "@/lib/utils";
 import { toast } from "sonner";
 import { useViewDialog } from "@/hooks/custom-view-dialog";
+import { handlePostInServer } from "@/lib/actions/post-server";
 
 export default function InstructorsDataTable({ instructors }) {
  console.log("instructors=>", instructors);
@@ -87,7 +88,7 @@ export default function InstructorsDataTable({ instructors }) {
 
   // add instructor dialog
   const [handleAddInstructor, addInstructorConfirmDialog] = useAddDialog({
-    onConfirm: (state) => console.log("Add", state),
+    onConfirm: (state) =>handleAddNewInstructor(state),
     title: "Add a New Instructor",
     fields: addInstructorFields,
   });
@@ -113,6 +114,36 @@ export default function InstructorsDataTable({ instructors }) {
     title: "Instructor's Profile",
     fields: viewInstructorFields,
   });
+
+// add new employee function
+const handleAddNewInstructor = async (state) => {
+  console.log("state=>", state);
+  try {
+    const data = {};
+    // Append all keys of state to data except 'loading' and 'error'
+    Object.keys(state).forEach(key => {
+      if (key !== 'loading' && key !== 'error') {
+        data[key] = state[key];
+      }
+    });
+   
+    const response = await handlePostInServer(
+      "/dashboard/create-instructor/",
+      JSON.parse(JSON.stringify(data)),
+      "/employees/instructors",
+      "formData"
+    );
+    console.log(response);
+    if (response.success) {
+      toast.success(response.success);
+    } else {
+      toast.error(response.error);
+    }
+  } catch (error) {
+    console.error("Error adding instructor:", error);
+    toast.error("Error adding instructor");
+  }
+};
 
   const handleEditInstructors = (state) => {
     try {

@@ -1,8 +1,8 @@
 
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
 import ArticlesDataTable from "@/data/content/articles/ArticlesDataTable";
-import QuranicLessonDataTable from "@/data/content/QuranicLessonDataTable";
-import RecordedSessionDataTable from "@/data/content/RecordedSessionDataTable";
+import QuranicLessonDataTable from "@/data/content/lesson/QuranicLessonDataTable";
+import RecordedSessionDataTable from "@/data/content/recorded/RecordedSessionDataTable";
 import { GetDataInServerSide } from "@/lib/actions/get-server";
 
 
@@ -11,6 +11,10 @@ export default async function ContentPage() {
     '/dashboard/articles/'
   )
 
+
+  const lesson = await GetDataInServerSide(
+    '/dashboard/quran-lessons/'
+  )
 
 
   return (
@@ -42,7 +46,7 @@ export default async function ContentPage() {
       <RecordedSessionDataTable />
     </TabsContent>
     <TabsContent value="quraniclesson">
-      <QuranicLessonDataTable />
+      <QuranicLessonDataTable  lesson={lesson}/>
     </TabsContent>
   </Tabs>
     )

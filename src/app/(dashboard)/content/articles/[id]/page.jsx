@@ -1,3 +1,4 @@
+import SpecificArticleDataTable from "@/data/content/articles/specific-article/SpecificArticleDataTable";
 import { GetDataInServerSide } from "@/lib/actions/get-server"
 
 export default async function ArticlesPage({id}) {
@@ -7,7 +8,7 @@ export default async function ArticlesPage({id}) {
 console.log(article);
   return (
     <div>
-      {/* <ArticlesDataTable articles={articles}/> */}
+     <SpecificArticleDataTable articlesData={article}/>
     </div>
   )
 }

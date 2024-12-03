@@ -15,32 +15,32 @@ export const addInstructorFields = [
       type: "text",
       required: true,
     },
-    {
-      id: "courses",
-      name: "courses", // Add `name` here to match state
-      label: "Courses Name",
-      placeholder: "select your courses",
-      type: "selected",
-      options: ["Tagweed", "Quran", "Tafseer"],
-      required: true,
-    },
-    {
-      id: "groups",
-      name: "groups", // Add `name` here to match state
-      label: "Groups Number",
-      placeholder: "select your groups",
-      type: "selected",
-      options: ["G9", "G3", "G2"],
-      required: true,
-    },
-    {
-      id: "phone",
-      name: "phone", // Add `name` here to match state
-      label: "Phone Number",
-      placeholder: "Enter your phone number",
-      type: "phone",
-      required: true,
-    },
+    // {
+    //   id: "courses",
+    //   name: "courses", // Add `name` here to match state
+    //   label: "Courses Name",
+    //   placeholder: "select your courses",
+    //   type: "selected",
+    //   options: ["Tagweed", "Quran", "Tafseer"],
+    //   required: true,
+    // },
+    // {
+    //   id: "groups",
+    //   name: "groups", // Add `name` here to match state
+    //   label: "Groups Number",
+    //   placeholder: "select your groups",
+    //   type: "selected",
+    //   options: ["G9", "G3", "G2"],
+    //   required: true,
+    // },
+    // {
+    //   id: "phone",
+    //   name: "phone", // Add `name` here to match state
+    //   label: "Phone Number",
+    //   placeholder: "Enter your phone number",
+    //   type: "phone",
+    //   required: true,
+    // },
     {
       id: "email",
       name: "email", // Add `name` here to match state
@@ -70,6 +70,16 @@ export const addInstructorFields = [
       type:"selected",
       options:['Male',"Female"],
       required:true,
+    },{
+      id:"department_id",
+      name:"department_id",
+      label:"Department",
+      placeholder:"Enter your department",
+      type:"selected",
+      path:"/dashboard/departments/",
+      view:"name",
+      options:[],
+      required:true
     }
   ];
 

@@ -1,3 +1,4 @@
+'use client';
 import { DatePickerDemo } from "@/components/shared/date-picker";
 import DragFile from "@/components/shared/drag-file";
 import ImagePicker from "@/components/shared/image-picker";
@@ -19,7 +20,6 @@ import {
 import { validate } from "@/lib/validation";
 import { Loader2, Plus } from "lucide-react";
 import { useReducer, useState } from "react";
-import { toast } from "sonner";
 
 const initialValues = {
   loading: false,
@@ -75,13 +75,12 @@ export const useAddDialog = ({
 
     dispatch({ type: "loading" }); // Show loading state during submission
     try {
-      onConfirm(state); // Call onConfirm callback with form values
-      dispatch({ type: "success" }); // Set success state on successful submission
+     onConfirm(state); // Call onConfirm callback with form values
     } catch (error) {
       dispatch({ type: "error", payload: { global: error.message } }); // Handle error state
     } finally {
-      dispatch({type: "values", payload: initialValues}); // Reset form values
-      dispatch({ type: "loading", payload: false }); // Hide loading state after submission
+      dispatch({ type: "success" }); // Clear error state on success
+      
     }
   };
 
@@ -105,9 +104,9 @@ export const useAddDialog = ({
         </DialogHeader>
         <form onSubmit={handleSubmit}>
           <div className="flex flex-col items-center gap-4 pt-[35px] pb-[29px]">
-            {fields.map((field) =>
+            {fields.map((field,index) =>
               field.type === "image" ? (
-                <div className="mb-2" key={field.id}>
+                <div className="mb-2" key={index}>
                   <ImagePicker
                     value={state[field.name]}
                     error={state.error[field.name]}

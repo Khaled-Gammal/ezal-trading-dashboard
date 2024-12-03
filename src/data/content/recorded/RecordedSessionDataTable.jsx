@@ -5,6 +5,7 @@ import ViewCard from "@/components/shared/view-card";
 import { useAddDialog } from "@/hooks/custom-dialog";
 import { useEditDialog } from "@/hooks/custom-edit-dialog";
 import { useConfirmMessage } from "@/hooks/delete-dialog";
+import { addRecordedFields, editRecordedFields } from "./constant-data";
 
 export default function RecordedSessionDataTable() {
   const columns = [
@@ -105,104 +106,10 @@ export default function RecordedSessionDataTable() {
     },
   ];
 
-  // add article fields for add 
-  const addRecordedFields = [
-    {
-      type: "text",
-      name: "title",
-      id: "title",
-      label: "Session Title",
-      placeholder: "Enter Session Title",
-    },
-    {
-      type: "selected",
-      name: "author",
-      id: "author",
-      label: "Author Name",
-      placeholder: "Select Author",
-      options: ["maryam", "Ahmed", "Mohamed", "Omar"],
-    },
-    {
-      type: "file",
-      upload:"pdf",
-      name: "content",
-      id: "content",
-      label: "Content Session",
-      placeholder: "Enter Session Content",
-    },{
-      type:"file",
-      upload:"video",
-      name:"recorded",
-      id:"recorded",
-      label:"Recorded Session",
-      placeholder:"Upload Recorded Session"
-    },
-    {
-      type: "date",
-      name: "date",
-      id: "date",
-      label: "Session Date",
-      placeholder: "Select Session Date",
-    },
-    {
-      type: "time",
-      name: "time",
-      id: "time",
-      label: "Session Time",
-      placeholder: "Select Session Time",
-    }
-  ];
-  // edit article fields for edit
-  const editRecordedFields = [
-    {
-      type: "text",
-      name: "title",
-      id: "title",
-      label: "Session Title",
-      placeholder: "Enter Session Title",
-    },
-    {
-      type: "selected",
-      name: "author",
-      id: "author",
-      label: "Author Name",
-      placeholder: "Select Author",
-      options: ["maryam", "Ahmed", "Mohamed", "Omar"],
-    },
-    {
-      type: "file",
-      upload:"pdf",
-      name: "content",
-      id: "content",
-      label: "Content Session",
-      placeholder: "Enter Session Content",
-    },{
-      type:"file",
-      upload:"video",
-      name:"recorded",
-      id:"recorded",
-      label:"Recorded Session",
-      placeholder:"Upload Recorded Session"
-    },
-    {
-      type: "date",
-      name: "date",
-      id: "date",
-      label: "Session Date",
-      placeholder: "Select Session Date",
-    },
-    {
-      type: "time",
-      name: "time",
-      id: "time",
-      label: "Session Time",
-      placeholder: "Select Session Time",
-    }
-  ];
-
+  
   // handle edit function
   const [handleEditRecorded, editRecordedConfirmDialog] = useEditDialog({
-    onConfirm: (state) => handleEdit,
+    onConfirm: (state) => handleEdit(state),
     title: "Edit Recorded Session",
     fields: editRecordedFields,
   });
@@ -220,9 +127,41 @@ export default function RecordedSessionDataTable() {
     text: "Do you sure you wanna to delete this group ? ",
     title: "Delete Group",
   });
-  const handleEdit = (id) => {
-    console.log("Edit", id);
-  };
+
+
+ // Handle the edit recorded request
+ const handleEdit = (state) => {
+  try {
+    adminsData.forEach(async (row) => {
+      if (row.id === state.id) {
+        const changes = compareData(row, state);
+        if (Object.keys(changes).length > 0) {
+          console.log("changes=>", changes);
+          // Call the API to update the student
+          const formData=changes
+          const response = await handleUpdateInServer(
+            `/dashboard/admins/${row?.id}/`,
+            "PATCH",
+            formData,
+            true,
+            "object",
+            "/employees/other-employees"
+          );
+          if (response.success) {
+          toast.success(response.success);
+          console.log("Update response=>", response);
+          }else {
+            toast.error(response.error);
+          }
+        }
+      }
+    });
+  } catch (error) {
+    console.error("Error updating instructor:", error);
+  }
+ 
+}
+
   return (
     <div>
       <DataTableDemo
