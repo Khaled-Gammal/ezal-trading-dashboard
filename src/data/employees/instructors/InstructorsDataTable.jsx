@@ -1,29 +1,36 @@
-"use client";
+'use client';
 import { DataTableDemo } from "@/components/shared/table-data";
 import { useAddDialog } from "@/hooks/custom-dialog";
 import { useEditDialog } from "@/hooks/custom-edit-dialog";
 import { useConfirmMessage } from "@/hooks/delete-dialog";
-import { addInstructorFields, editInstructorFields, viewInstructorFields } from "./constant-data";
+import { addEmployFields, editEmployFields, viewEmployeeFields } from "./constant-data";
 import { handleUpdateInServer } from "@/lib/actions/patch-server";
-import { handleDeleteRow } from "@/lib/actions/delete-server";
 import { compareData } from "@/lib/utils";
 import { toast } from "sonner";
+import { handleDeleteRow } from "@/lib/actions/delete-server";
 import { useViewDialog } from "@/hooks/custom-view-dialog";
 import { handlePostInServer } from "@/lib/actions/post-server";
 
-export default function InstructorsDataTable({ instructors }) {
- console.log("instructors=>", instructors);
+
+export default function InstructorsDataTable({instructors}) {
+  console.log(instructors);
+// columns for the table
   const columns = [
     {
-      id: "select",
-      header: "",
-      className: "text-center",
-      accessorKey: "instructor_id",
+        id: "select",
+        header: "",
+        className: "text-center",
+        accessorKey: "id",
     },
     {
       id: "full_name",
       header: "Employee Name",
       accessorKey: "full_name",
+    },{
+      id:"section",
+      header:"Section",
+      accessorKey:"departments",
+      className: "text-center",
     },
     {
       id: "email",
@@ -36,23 +43,10 @@ export default function InstructorsDataTable({ instructors }) {
       header: "Phone Number",
       accessorKey: "phone_number",
       className: "text-center",
-    },
-    {
-      id: "groups",
-      header: "Assigned Sections",
-      accessorKey: "groups",
-      className: "text-center",
-    },
-    {
-      id: "departments",
-      header: "Assigned Departments",
-      accessorKey: "departments",
-      className: "text-center",
-    },
-    {
-      id: "image",
-      header: "Image",
-      accessorKey: "image",
+    },{
+      id: "gender",
+      header: "Gender",
+      accessorKey: "gender",
       className: "text-center",
     },
     {
@@ -62,92 +56,94 @@ export default function InstructorsDataTable({ instructors }) {
       className: "text-center",
     },
     {
+      id: "image",
+      header: "Image",
+      accessorKey: "image",
+      className: "text-center",
+    },
+    {
       id: "actions",
       header: "Actions",
       accessorKey: "actions",
       className: "text-center",
     },
   ];
-  const instructorsData = instructors?.results?.map((instructor) => {
+
+  // // map the data to the columns
+  const instructorsData = instructors?.results.map((admin) => {  
     return {
-      id: instructor.instructor_id,
-      full_name: instructor.user.full_name,
-      email: instructor.user.email,
-      phone_number: instructor.user.phone_number,
-      age: instructor.user.age,
-      gender: instructor.user.gender,
-      groups: instructor.groups.map((group) => group.group_name).join("/ "),
-      departments: instructor.departments
-        .map((department) => department.department_name)
-        .join(", "),
-      image: instructor.user.image,
-      status: instructor.user.is_active === true ? "Active" : "Un Active",
+      id: admin.admin_id,
+      full_name: admin?.full_name,
+      departments: admin.departments.map((department) => department.department_name).join(", "),
+      email: admin?.email,
+      phone_number: admin?.phone_number,
+      gender: admin?.gender,
+      age: admin?.age,
+      status: admin.is_active ? "Active" : "Inactive",
+      image: admin?.image,
+    
     };
-  });
- 
-
-  // add instructor dialog
-  const [handleAddInstructor, addInstructorConfirmDialog] = useAddDialog({
-    onConfirm: (state) =>handleAddNewInstructor(state),
+  }
+  );
+  
+  // Add a new employee dialog
+  const [handleAddEmployee, addEmployeeConfirmDialog] = useAddDialog({
+    onConfirm: (state) => handleAddNewEmployee(state),
     title: "Add a New Instructor",
-    fields: addInstructorFields,
+    fields: addEmployFields,
   });
 
-  // edit instructor dialog
-  const [handleEditInstructor, editEmployeeConfirmDialog] = useEditDialog({
-    onConfirm: (state) => handleEditInstructors(state),
-    title: "Edit an Instructor",
-    fields: editInstructorFields,
+  // // Edit employee dialog
+  const [handleEditEmployee, editEmployeeConfirmDialog] = useEditDialog({
+    onConfirm: (state) => handleEdit(state),
+    title: "Edit Instructors",
+    fields: editEmployFields,
   });
 
-  // delete instructor dialog
-  const [handleDelete, deleteComponentConfirmDialog] = useConfirmMessage({
-    onConfirm: (row) => handleDeleteRow("/dashboard/instructors/",row?.id,"/employees/instructors"),
-    text: "Do you sure you wanna to delete this Instructor ? ",
-    title: "Delete Instructor",
-    successMessage: "You have successfully deleted the instructor",
-  });
-
-  // view instructor dialog
-  const [handleViewInstructor, viewInstructorConfirmDialog] = useViewDialog({
+  const [handleViewEmployee, viewEmployeeConfirmDialog] = useViewDialog({
     // onConfirm: (state) => handleEditCurrentStudent(state),
     title: "Instructor's Profile",
-    fields: viewInstructorFields,
+    fields: viewEmployeeFields,
   });
 
-// add new employee function
-const handleAddNewInstructor = async (state) => {
-  console.log("state=>", state);
-  try {
-    const data = {};
-    // Append all keys of state to data except 'loading' and 'error'
-    Object.keys(state).forEach(key => {
-      if (key !== 'loading' && key !== 'error') {
-        data[key] = state[key];
-      }
-    });
-   
-    const response = await handlePostInServer(
-      "/dashboard/create-instructor/",
-      JSON.parse(JSON.stringify(data)),
-      "/employees/instructors",
-      "formData"
-    );
-    console.log(response);
-    if (response.success) {
-      toast.success(response.success);
-    } else {
-      toast.error(response.error);
-    }
-  } catch (error) {
-    console.error("Error adding instructor:", error);
-    toast.error("Error adding instructor");
-  }
-};
+  // // Delete employee dialog
+  const [handleDelete, deleteComponentConfirmDialog] = useConfirmMessage({
+    onConfirm: (row) => handleDeleteRow("/dashboard/instructors/",row?.id,"/employees/instructors"),
+    text: "Do you sure you wanna to delete this instructor ? ",
+    title: "Delete Instructors",
+  });
 
-  const handleEditInstructors = (state) => {
+  const handleAddNewEmployee = async (state) => {
+    console.log("state=>", state);
+     try {
+      const data = new FormData();
+      // Append all keys of state to data except 'loading' and 'error'
+      Object.keys(state).forEach(key => {
+        if (key !== 'loading' && key !== 'error') {
+          data.append(key,state[key]);
+        }
+      });
+      const response = await handlePostInServer(
+        "/dashboard/create-instructor/",
+        data,
+        "/employees/instructors",
+        false,
+        "formData"
+      );
+      if (response.success) {
+        toast.success(response.success);
+      } else {
+        toast.error(response.error);
+      }
+    } catch (error) {
+      console.error("Error adding instructor:", error);
+      toast.error("Error adding instructor");
+    }
+  };
+  // Handle the edit employee request
+  const handleEdit = (state) => {
     try {
-      instructorsData.forEach(async (row) => {
+      adminsData.forEach(async (row) => {
         if (row.id === state.id) {
           const changes = compareData(row, state);
           if (Object.keys(changes).length > 0) {
@@ -155,12 +151,12 @@ const handleAddNewInstructor = async (state) => {
             // Call the API to update the student
             const formData=changes
             const response = await handleUpdateInServer(
-              `/dashboard/instructors/${row?.id}/`,
+              `/dashboard/admins/${row?.id}/`,
               "PATCH",
               formData,
               true,
               "object",
-              "/employees/instructors"
+              "/employees/other-employees"
             );
             if (response.success) {
             toast.success(response.success);
@@ -174,22 +170,23 @@ const handleAddNewInstructor = async (state) => {
     } catch (error) {
       console.error("Error updating instructor:", error);
     }
-  };
-
+   
+  }
+ 
   return (
     <div>
-      <DataTableDemo
-        data={instructorsData}
+        <DataTableDemo 
+       data={instructorsData}
         columns={columns}
-        isPending={false}
-        onDelete={handleDelete}
-        onEdit={handleEditInstructor}
-        onView={handleViewInstructor}
+        isPending={false} 
+      onDelete={handleDelete}
+      onEdit={handleEditEmployee}
+      onView={handleViewEmployee}
       />
-      {deleteComponentConfirmDialog}
-      {editEmployeeConfirmDialog}
-      {addInstructorConfirmDialog}
-      {viewInstructorConfirmDialog}
+     {deleteComponentConfirmDialog}
+     {editEmployeeConfirmDialog} 
+     {addEmployeeConfirmDialog}
+     {viewEmployeeConfirmDialog}
     </div>
   );
 }

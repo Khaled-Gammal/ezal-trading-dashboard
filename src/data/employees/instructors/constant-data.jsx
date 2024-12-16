@@ -1,151 +1,145 @@
-export const addInstructorFields = [
+export const addEmployFields = [
     {
-      id: "image",
-      name: "image", // Add `name` here to match state
+      id:'image',
+      name: "image",  // Add `name` here to match state
       label: "Employee Image",
       placeholder: "Upload your image",
       type: "image",
-      required: true,
+      required: false,
     },
     {
       id: "full_name",
-      name: "full_name", // Add `name` here to match state
-      label: "Intructor Name",
+      name: "full_name",  // Add `name` here to match state
+      label: "Employee Name",
       placeholder: "Enter your name",
       type: "text",
       required: true,
     },
-    // {
-    //   id: "courses",
-    //   name: "courses", // Add `name` here to match state
-    //   label: "Courses Name",
-    //   placeholder: "select your courses",
-    //   type: "selected",
-    //   options: ["Tagweed", "Quran", "Tafseer"],
-    //   required: true,
-    // },
-    // {
-    //   id: "groups",
-    //   name: "groups", // Add `name` here to match state
-    //   label: "Groups Number",
-    //   placeholder: "select your groups",
-    //   type: "selected",
-    //   options: ["G9", "G3", "G2"],
-    //   required: true,
-    // },
-    // {
-    //   id: "phone",
-    //   name: "phone", // Add `name` here to match state
-    //   label: "Phone Number",
-    //   placeholder: "Enter your phone number",
-    //   type: "phone",
-    //   required: true,
-    // },
-    {
-      id: "email",
-      name: "email", // Add `name` here to match state
-      label: "E-mail address",
-      placeholder: "Enter your email",
-      type: "email",
-      required: true,
-    },{
-      id: "password",
-      name: "password", // Add `name` here to match state
-      label: "Password",
-      placeholder: "Enter your password",
-      type: "password",
-      required: true,
-    },{
-      id:"age",
-      name:"age",
-      label:"Age",
-      placeholder:"Enter your age",
-      type:"number",
-      required:true,
-    },{
-      id:"gender",
-      name:"gender",
-      label:"Gender",
-      placeholder:"Enter your gender",
-      type:"selected",
-      options:['Male',"Female"],
-      required:true,
-    },{
-      id:"department_id",
-      name:"department_id",
-      label:"Department",
-      placeholder:"Enter your department",
-      type:"selected",
-      path:"/dashboard/departments/",
-      view:"name",
-      options:[],
-      required:true
-    }
-  ];
-
- export  const editInstructorFields = [
-    {
-      id: "full_name",
-      name: "full_name", // Add `name` here to match state
-      label: "Istructor Name",
-      placeholder: "Enter your name",
-      type: "text",
-      required: true,
-    },
-    {
-      id: "email",
-      name: "email", // Add `name` here to match state
-      label: "E-mail address",
-      placeholder: "Enter your email",
-      type: "email",
-      required: true,
-    },
+    
     {
       id: "phone",
-      name: "phone", // Add `name` here to match state
+      name: "phone",  // Add `name` here to match state
       label: "Phone Number",
       placeholder: "Enter your phone number",
       type: "phone",
       required: true,
     },
     {
-      id: "courses",
-      name: "courses", // Add `name` here to match state
-      label: "Courses Name",
-      placeholder: "select your courses",
-      type: "selected",
-      options: ["Tagweed", "Quran", "Tafseer"],
+      id: "email",
+      name: "email",  // Add `name` here to match state
+      label: "E-mail address",
+      placeholder: "Enter your email",
+      type: "email",
+      required: true,
     },
     {
-      id: "groups",
-      name: "groups", // Add `name` here to match state
-      label: "Groups Number",
-      placeholder: "select your groups",
-      type: "selected",
-      options: ["G9", "G3", "G2"],
+        id:"password",
+        name:"password",
+        label:"Password",
+        placeholder:"Enter your password",
+        type:"password",
+        required:true,
+    },
+    {
+        id: "age",
+        name: "age",  // Add `name` here to match state
+        label: "Age",
+        placeholder: "Enter your age",
+        type: "number",
+        required: true,
+      },
+      {
+        id:"id",
+        name: "department_id",  // Add `name` here to match state
+        label: "Section",
+        placeholder: "select your section",
+        type: "selected",
+        path: "/dashboard/sections/",
+        view: "name",
+        options: [],
+        renderValue: ( options,value) => {
+          console.log(options,value);
+          const section = options?.find((option) => option?.id === Number(value))?.name;
+          return section ? section : "Select your section";
+        },
+        required: true,
+      },
+      {
+          id:"gender",
+          name:"gender",  // Add `name` here to match state
+          label:"Gender",
+          placeholder:"select your gender",
+          type:"selected",
+          options:['Male','Female'],
+          required: true,
+      }
+  ];
+  
+ export  const editEmployFields = [
+    {
+        id: "image",
+        name: "image",  // Add `name` here to match state
+        label: "Employee Image",
+        placeholder: "Upload your image",
+        type: "image",
+        required: true
+    },
+    {
+      id: "full_name",
+      name: "full_name",  // Add `name` here to match state
+      label: "Employee Name",
+      placeholder: "Enter your name",
+      type: "text",
+      required: true,
+    },
+    {
+      id: "email",
+      name: "email",  // Add `name` here to match state
+      label: "E-mail address",
+      placeholder: "Enter your email",
+      type: "email",
+      required: true,
+    },
+    {
+      id:"phone_number",
+      name: "phone_number",  // Add `name` here to match state
+      label: "Phone Number",
+      placeholder: "Enter your phone number",
+      type: "phone",
+      required: true,
     },
     {
       id: "age",
-      name: "age", // Add `name` here to match state
+      name: "age",  // Add `name` here to match state
       label: "Age",
       placeholder: "Enter your age",
       type: "number",
       required: true,
     },
     {
-        id: "gender",
-        name:"gender",
+      id:"section",
+      name: "section",  // Add `name` here to match state
+      label: "Section",
+      placeholder: "select your section",
+      type: "selected",
+      options: ["Customer service", "Office", "Management"],
+      
+    },
+    {
+        id:"gender",
+        name:"gender",  // Add `name` here to match state
         label:"Gender",
-        placeholder:"Enter your gender",
+        placeholder:"select your gender",
         type:"selected",
-        options:['Male','Female']
-    }   
+        options:['Male','Female'],
+    }
+    
   ];
 
-  export const viewInstructorFields = [
+  export const viewEmployeeFields = [
     {
-      id: "image",
-      name: "image", // Add `name` here to match state
+      id:'image',
+      name: "image",  // Add `name` here to match state
       label: "Employee Image",
       placeholder: "Upload your image",
       type: "image",
@@ -153,59 +147,52 @@ export const addInstructorFields = [
     },
     {
       id: "full_name",
-      name: "full_name", // Add `name` here to match state
-      label: "Intructor Name",
+      name: "full_name",  // Add `name` here to match state
+      label: "Employee Name",
       placeholder: "Enter your name",
       type: "text",
       disabled: true,
     },
     {
-      id: "courses",
-      name: "courses", // Add `name` here to match state
-      label: "Courses Name",
-      placeholder: "select your courses",
-      type: "selected",
-      options: ["Tagweed", "Quran", "Tafseer"],
+      id: "email",
+      name: "email",  // Add `name` here to match state
+      label: "E-mail address",
+      placeholder: "Enter your email",
+      type: "email",
       disabled: true,
     },
     {
-      id: "groups",
-      name: "groups", // Add `name` here to match state
-      label: "Groups Number",
-      placeholder: "select your groups",
-      type: "selected",
-      options: ["G9", "G3", "G2"],
-      disabled: true,
-    },
-    {
-      id: "phone",
-      name: "phone", // Add `name` here to match state
+      id:"phone_number",
+      name: "phone_number",  // Add `name` here to match state
       label: "Phone Number",
       placeholder: "Enter your phone number",
       type: "phone",
       disabled: true,
     },
     {
-      id: "email",
-      name: "email", // Add `name` here to match state
-      label: "E-mail address",
-      placeholder: "Enter your email",
-      type: "email",
+      id: "age",
+      name: "age",  // Add `name` here to match state
+      label: "Age",
+      placeholder: "Enter your age",
+      type: "number",
       disabled: true,
-    },{
-      id:"age",
-      name:"age",
-      label:"Age",
-      placeholder:"Enter your age",
-      type:"number",
+    },
+    {
+      id:"section",
+      name: "section",  // Add `name` here to match state
+      label: "Section",
+      placeholder: "select your section",
+      type: "selected",
+      options: ["Customer service", "Office", "Management"],
       disabled: true,
-    },{
-      id:"gender",
-      name:"gender",
-      label:"Gender",
-      placeholder:"Enter your gender",
-      type:"selected",
-      options:['Male',"Female"],
-      disabled: true,
+    },
+    {
+        id:'gender',
+        name:"gender",
+        label:"gender",
+        placeholder:"select your gender",
+        type:"selected",
+        options:['Male',"Female"],
+        disabled:true
     }
-  ];
+    ];

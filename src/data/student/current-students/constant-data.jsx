@@ -61,8 +61,8 @@ export const editCurrentStudentsFields = [
 
   export const viewCurrentStudentsFields = [
     {
-        id: "user_image",
-        name: "user_image",  // Add `name` here to match state
+        id: "image",
+        name: "image",  // Add `name` here to match state
         label: "Student Name",
         placeholder: "Enter your name",
         type: "image",

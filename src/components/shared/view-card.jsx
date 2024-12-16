@@ -18,7 +18,7 @@ export default function ViewCard({ student }) {
         onClick={() => handleViewCurrentStudent(student)} // Trigger the dialog on click
       >
         <Image
-          src={students}
+          src={student?.image||students}
           alt="student"
           height={45}
           width={45}

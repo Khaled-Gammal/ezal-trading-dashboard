@@ -7,6 +7,10 @@ import moment from "moment";
 import { addSessionFields, editSessionFields, viewSessionFields } from "./constant-data";
 import { useViewDialog } from "@/hooks/custom-view-dialog";
 import { handleDeleteRow } from "@/lib/actions/delete-server";
+import { toast } from "sonner";
+import { handlePostInServer } from "@/lib/actions/post-server";
+import { handleUpdateInServer } from "@/lib/actions/patch-server";
+import { compareData } from "@/lib/utils";
 
 
 export default function SessionsDataTable({sessions}) {
@@ -77,14 +81,14 @@ export default function SessionsDataTable({sessions}) {
  
   // edit group dialog
   const [handleEditSession, editSessionConfirmDialog] = useEditDialog({
-    onConfirm: (state) => handleEdit,
+    onConfirm: (state) => handleEdit(state),
     title: "Edit Session",
     fields: editSessionFields,
   });
 
   // add group dialog
-  const [handleAddEmployee, addSessionConfirmDialog] = useAddDialog({
-    onConfirm: (id) => console.log("Add",id),
+  const [handleAddSession, addSessionConfirmDialog] = useAddDialog({
+    onConfirm: (state) => handleAddNewSession(state),
     title: "Add a New Session",
     fields: addSessionFields,
   });
@@ -99,10 +103,66 @@ export default function SessionsDataTable({sessions}) {
     text: "Do you sure you wanna to delete this session ? ",
     title: "Delete session",
   });
-  const handleEdit = (id) => {
-    console.log("Edit",id);
+  const handleEdit = (state) => {
+    try {
+      sessionData.forEach(async (row) => {
+        if (row.id === state.id) {
+          const changes = compareData(row, state);
+          if (Object.keys(changes).length > 0) {
+            console.log("changes=>", changes);
+            // Call the API to update the student
+            const formData=changes
+            const response = await handleUpdateInServer(
+              `/dashboard/live-sessions/${row?.id}/`,
+              "PATCH",
+              formData,
+              true,
+              "object",
+              "/sessions"
+            );
+            if (response.success) {
+            toast.success(response.success);
+            console.log("Update response=>", response);
+            }else {
+              toast.error(response.error);
+            }
+          }
+        }
+      });
+    } catch (error) {
+      console.error("Error updating instructor:", error);
+    }
   }
- 
+ const handleAddNewSession = async (state) => {
+    console.log("state=>", state);
+    try {
+      const data = {};
+      // Append all keys of state to data except 'loading' and 'error'
+      Object.keys(state).forEach(key => {
+        if (key !== 'loading' && key !== 'error') {
+          data[key] = state[key];
+        }
+      });
+      data["start_time"] = moment(data["start_time"]).format("YYYY-MM-DDTHH:mm:ssZ");
+      const response = await handlePostInServer(
+        "/dashboard/meetings/",
+        JSON.parse(JSON.stringify(data)),
+        "/sessions",
+        true,
+        "object"
+      );
+      
+      if (response.success) {
+        toast.success(response.success);
+      } else {
+        toast.error(response.error);
+      }
+    } catch (error) {
+      console.error("Error adding section:", error);
+      toast.error("Error adding section");
+    }
+  }
+
   return (
     <div>
       <DataTableDemo data={sessionData} columns={columns} isPending={false} 

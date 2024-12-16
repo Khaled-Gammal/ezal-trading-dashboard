@@ -15,7 +15,7 @@ function SelectField({
   value,
   onChange,
   label,
-  options=[],
+  options:intialValue=[],
   path,
   placeholder = "Select",
   error,
@@ -24,7 +24,7 @@ function SelectField({
   view = "name",
 }) {
   const [loading, setLoading] = useState(false);
-  
+  const [options, setOptions] = useState(intialValue);
   const labelRef = useRef(null);
 
   const handleGetData = async () => {
@@ -33,7 +33,7 @@ function SelectField({
       const res = await GetDataInServerSide(path);
       console.log(res);
       if (res) {
-        options = res.data;
+        setOptions(res.results);
       }
     } catch (error) {
       console.error("Error fetching data:", error);
@@ -58,7 +58,7 @@ function SelectField({
       labelRef.current.classList.remove("text-primary"); // Remove primary color on blur
     }
   };
-
+console.log("options=>",options);
   return (
     <div className="w-full">
       {label && (
@@ -82,7 +82,7 @@ function SelectField({
       >
         <SelectTrigger className="w-full">
           <SelectValue>
-          {renderValue() ? renderValue() : value ? options.find(opt => opt === value) : placeholder}
+          {renderValue() ? renderValue(options,value) : value ? options.find(opt => opt === value) : placeholder}
           </SelectValue>
         </SelectTrigger>
         <SelectContent>
@@ -92,7 +92,8 @@ function SelectField({
             </SelectItem>
           ) : (
             options?.map((item) => (
-              <SelectItem key={item} value={item.id||item}>
+              console.log(item),
+              <SelectItem key={item} value={item[id]||item}>
                 {item[view] ? item[view] : item}
               </SelectItem>
             ))

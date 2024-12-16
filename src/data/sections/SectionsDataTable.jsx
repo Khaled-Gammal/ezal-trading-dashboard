@@ -85,6 +85,7 @@ const handleAddNewSection = async(state) => {
       "/dashboard/sections/",
       JSON.parse(JSON.stringify(data)),
       "/sections",
+      true,
       "object"
     );
     console.log(response);

@@ -17,7 +17,7 @@ export default function ImagePicker({ value, onChange, error , disabled=false })
     }
 
     const isValidFile = value instanceof Blob || value instanceof File;
-
+console.log(value);
     return (
         <div 
             className={`h-[70px] w-[70px] rounded-full bg-gray-300 flex justify-center items-center ${error ? 'border-2 border-red-800' : ''}`} 
@@ -32,7 +32,7 @@ export default function ImagePicker({ value, onChange, error , disabled=false })
             />
             {
                 isValidFile ?
-                <Image src={URL?.createObjectURL(value)} alt='image' height={70} width={70} className='h-[70px] w-[70px] rounded-full object-cover' />
+                <Image src={URL?.createObjectURL(value)||value} alt='image' height={70} width={70} className='h-[70px] w-[70px] rounded-full object-cover' />
                 :
                 <Camera size={32} color="#606060" strokeWidth={0.75}  />
             }

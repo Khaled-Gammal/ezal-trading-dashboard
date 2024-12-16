@@ -4,11 +4,13 @@ import InstructorsDataTable from "@/data/employees/instructors/InstructorsDataTa
 import { GetDataInServerSide } from "@/lib/actions/get-server";
 
 
-export default async function InstructorsPage() {
+
+export default async function EmployeesPage() {
 
   const instructors = await GetDataInServerSide(
     '/dashboard/instructors/'
   )
+  console.log(instructors);
   return (
       <div>
        <InstructorsDataTable instructors={instructors}/>

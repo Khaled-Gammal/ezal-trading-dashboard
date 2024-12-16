@@ -14,25 +14,29 @@ export const addGroupFields = [
     label: "Instructor Name",
     placeholder: "Select instructor name",
     type: "selected",
-    path: "/dashboard/sections/",
-     view: "name",
+    path: "/dashboard/instructors/",
+    view: "full_name",
     options: [],
-    renderValue: (options) => {
-      console.log(options);
-      // const instructor = options.find((option) => option.id === value);
-      // return instructor ? instructor?.name : "Select your instructor";
-    },
+    renderValue: (options,value) => {
+      const instructor = options?.find((option) => option?.instructor_id === Number(value))?.full_name;
+      return instructor ? instructor : "Select your instructor"
+    }
    
   },
   {
-    id: "department",
+    id: "id",
     name: "department", // Add `name` here to match state
     label: "Department Name",
     placeholder: "Select department name",
     type: "selected",
     path: "/dashboard/departments/",
-    view: "name",
+    view: "title",
     options: [],
+    renderValue: (options,value) => {
+       console.log(options);
+      const department = options?.find((option) => option.id === Number(value));
+      return department ? department?.title : "Select your department";
+    },
   },
 ];
 

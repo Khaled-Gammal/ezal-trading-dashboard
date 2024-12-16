@@ -7,35 +7,29 @@ export  const addArticleFields = [
       placeholder: "Enter Session Title",
     },
     {
-      type: "selected",
-      name: "author",
-      id: "author",
-      label: "Author Name",
-      placeholder: "Select Author",
-      options: ["Ali", "Ahmed", "Mohamed", "Omar"],
+      type: "text",
+      name: "publisher_name",
+      id: "publisher_name",
+      label: "Publisher name ",
+      placeholder: "Enter Session Title",
     },
     {
       type: "description",
-      name: "content",
-      id: "content",
+      name: "body",
+      id: "body",
       label: "Content Article",
       placeholder: "Enter Content Article",
     },
-    
     {
-      type: "date",
-      name: "date",
-      id: "date",
-      label: "Date",
-      placeholder: "Select Date",
+      type: "file",
+      name: "image",
+      id: "image",
+      upload: "image",
+      label: "Image",
+      placeholder: "Enter Content Article",
     },
-    {
-      type: "time",
-      name: "time",
-      id: "time",
-      label: "Time",
-      placeholder: "Select Time",
-    }
+    
+   
   ];
   export const editArticleFields = [
     {

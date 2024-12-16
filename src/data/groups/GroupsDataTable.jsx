@@ -9,6 +9,7 @@ import { compareData } from "@/lib/utils";
 import { handleUpdateInServer } from "@/lib/actions/patch-server";
 import { toast } from "sonner";
 import { useViewDialog } from "@/hooks/custom-view-dialog";
+import { handlePostInServer } from "@/lib/actions/post-server";
 
 export default function GroupsDataTable({groups}) {
 // columns for the table
@@ -35,17 +36,19 @@ export default function GroupsDataTable({groups}) {
       id: "instructor",
       header: "Assigned Instructor",
       accessorKey: "instructor",
+      className: "text-center",
     },
     {
       id: "number_students",
       header: "No.of Student",
       accessorKey: "number_students",
+      className: "text-center",
     },
     {
       id: "department",
       header: "Department Name ",
       accessorKey: "department",
-      
+      className: "text-center",
     },
     {
       id: "actions",
@@ -76,7 +79,7 @@ export default function GroupsDataTable({groups}) {
 
   // add group dialog
   const [handleAddGroup, addGroupConfirmDialog] = useAddDialog({
-    onConfirm: (id) => console.log("Add",id),
+    onConfirm: (state) => handleAddNewGroup(state),
     title: "Add a New Group",
     fields: addGroupFields,
   });
@@ -93,6 +96,36 @@ export default function GroupsDataTable({groups}) {
     text: "Do you sure you wanna to delete this group ? ",
     title: "Delete Group",
   });
+
+  const handleAddNewGroup = async (state) => {
+    console.log("state=>", state);
+    try {
+      const data = {};
+      // Append all keys of state to data except 'loading' and 'error'
+      Object.keys(state).forEach(key => {
+        if (key !== 'loading' && key !== 'error') {
+          data[key] = state[key];
+        }
+      });
+      const response = await handlePostInServer(
+        "/dashboard/groups/",
+        JSON.parse(JSON.stringify(data)),
+        "/groups",
+        true,
+        "object"
+      );
+      console.log(response);
+      if (response.success) {
+        toast.success(response.success);
+      } else {
+        toast.error(response.error);
+      }
+    } catch (error) {
+      console.error("Error adding section:", error);
+      toast.error("Error adding section");
+    }
+  }
+
   const handleEdit = (state) => {
     try {
       Groups.forEach(async (row) => {
@@ -108,7 +141,7 @@ export default function GroupsDataTable({groups}) {
               formData,
               true,
               "object",
-              "/employees/other-employees"
+              "/groups"
             );
             if (response.success) {
             toast.success(response.success);

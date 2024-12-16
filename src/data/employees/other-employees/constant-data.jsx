@@ -57,10 +57,10 @@ export const addEmployFields = [
         path: "/dashboard/sections/",
         view: "name",
         options: [],
-        renderValue: ( options) => {
-          console.log(options);
-          // const section = options.find((option) => option.id === value);
-          // return section ? section?.name : "Select your section";
+        renderValue: ( options,value) => {
+          console.log(options,value);
+          const section = options?.find((option) => option.id === Number(value));
+          return section ? section?.name : "Select your section";
         },
         required: true,
       },
@@ -178,13 +178,20 @@ export const addEmployFields = [
       disabled: true,
     },
     {
-      id:"section",
-      name: "section",  // Add `name` here to match state
+      id:"id",
+      name: "section_id",  // Add `name` here to match state
       label: "Section",
       placeholder: "select your section",
       type: "selected",
-      options: ["Customer service", "Office", "Management"],
-      disabled: true,
+      path: "/dashboard/sections/",
+      view: "name",
+      options: [],
+      renderValue: ( options,value) => {
+        console.log(options,value);
+        const section = options?.find((option) => option?.id === Number(value))?.name;
+        return section ? section : "Select your section";
+      },
+      required: true,
     },
     {
         id:'gender',

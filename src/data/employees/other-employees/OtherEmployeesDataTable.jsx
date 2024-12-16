@@ -45,9 +45,9 @@ export default function EmployeesDataTable({admins}) {
       accessorKey: "gender",
     },
     {
-      id: "status",
+      id: "is_active",
       header: "Status",
-      accessorKey: "status",
+      accessorKey: "is_active",
     },
     {
       id: "image",
@@ -65,15 +65,16 @@ export default function EmployeesDataTable({admins}) {
   // map the data to the columns
   const adminsData = admins?.results.map((admin) => {  
     return {
-      id: admin.admin_id,
-      full_name: admin.user.full_name,
+      id: admin?.admin_id,
+      full_name: admin?.full_name,
       section: admin.section_name,
-      email: admin.user.email,
-      phone_number: admin.user.phone_number,
-      gender: admin.user.gender,
-      age: admin.user.age,
-      status: admin.user.status===1 ? "Active" : "Inactive",
-      image: admin.user.image,
+      section_id: admin.section_id,
+      email: admin.email,
+      phone_number: admin.phone_number,
+      gender: admin.gender,
+      age: admin.age,
+      is_active: admin.is_active ? "Active" : "Inactive",
+      image: admin.image,
     
     };
   }
@@ -107,20 +108,20 @@ export default function EmployeesDataTable({admins}) {
   });
 
   const handleAddNewEmployee = async (state) => {
-    console.log("state=>", state);
     try {
-      const data = {};
+      const data = new FormData();
       // Append all keys of state to data except 'loading' and 'error'
       Object.keys(state).forEach(key => {
         if (key !== 'loading' && key !== 'error') {
-          data[key] = state[key];
+          data.append(key, state[key]);
         }
       });
      
       const response = await handlePostInServer(
         "/dashboard/create-admin/",
-        JSON.parse(JSON.stringify(data)),
+        data,
         "/employees/other-employees",
+        false,
         "formData"
       );
       console.log(response);
@@ -169,7 +170,9 @@ export default function EmployeesDataTable({admins}) {
  
   return (
     <div>
-      <DataTableDemo data={adminsData} columns={columns} isPending={false} 
+      <DataTableDemo 
+      data={adminsData}
+       columns={columns} isPending={false} 
       onDelete={handleDelete}
       onEdit={handleEditEmployee}
       onView={handleViewEmployee}

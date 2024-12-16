@@ -111,6 +111,7 @@ export const useAddDialog = ({
                     value={state[field.name]}
                     error={state.error[field.name]}
                     onChange={(value) => {
+                      console.log("value=>", value);
                       dispatch({
                         type: "values",
                         payload: { [field.name]: value },

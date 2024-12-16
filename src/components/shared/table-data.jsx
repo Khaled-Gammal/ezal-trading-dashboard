@@ -162,15 +162,15 @@ export function DataTableDemo({
                   </div>
                 </TableCell>
               </TableRow>
-            ) : table.getRowModel().rows.length ? (
+            ) : table.getRowModel()?.rows.length ? (
               table.getRowModel().rows.map((row) => (
                 <TableRow
-                  key={row.id}
+                  key={row}
                   data-state={row.getIsSelected() && "selected"}
                 >
-                  {row.getVisibleCells().map((cell) => (
+                  {row.getVisibleCells()?.map((cell) => (
                     <TableCell
-                      key={cell.id}
+                      key={cell.column.id}
                       className={`${cell.column.columnDef.className} text-black-blue-100 dark:text-[#B6B6B6] text-sm font-normal px-4 py-4`}
                     >
                       {cell.column.columnDef.id === "actions" ? (
