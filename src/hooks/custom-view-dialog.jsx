@@ -43,6 +43,7 @@ const reducer = (state, action) => {
 export const useViewDialog = ({
   title = "Add Items",
   fields,
+  viewFooter,
   onConfirm = () => {},
 }) => {
  
@@ -227,7 +228,8 @@ console.log(state);
             )}
           </div>
           {/* Dialog footer */}
-          {/* <DialogFooter className="flex items-center justify-between gap-6 md:gap-[60px] ">
+          {viewFooter?
+          <DialogFooter className="flex items-center justify-between gap-6 md:gap-[60px] ">
             <DialogClose asChild>
               <Button className={"cancel-button w-full"} variant="outline">
                 Cancel
@@ -240,7 +242,7 @@ console.log(state);
             >
               {state.loading ? "Loading..." : "Add"}
             </Button>
-          </DialogFooter> */}
+          </DialogFooter>:null}
         </form>
       </DialogContent>
     </Dialog>

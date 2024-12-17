@@ -4,6 +4,7 @@ import SearchInput from "../shared/search-input";
 import { ModeToggle } from "../toggle-mode";
 import { Avatar, AvatarFallback, AvatarImage } from "../ui/avatar";
 import { PageRoutes } from "./sidebar-routing";
+import ProfileMenu from "./profile-menu";
 
 
 function TopBar() {
@@ -16,10 +17,7 @@ function TopBar() {
         <div className="hidden  md:block">
         <SearchInput />
         </div>
-        <Avatar>
-          <AvatarImage src="https://github.com/shadcn.png" />
-          <AvatarFallback>CN</AvatarFallback>
-        </Avatar>
+        <ProfileMenu/>
         <ModeToggle/>
       </div>
     </section>

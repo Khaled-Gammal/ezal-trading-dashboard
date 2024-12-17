@@ -42,7 +42,9 @@ async function handleLogin({ email, password }) {
     if (response.status === 200) {
       setCookie("token", data?.token, { cookies }, Expired_time);
       redirectPath = `/`;
-      return { success: "User logged in successfully" };  // This will be used for success
+      return {
+        status: 200,
+        success: "User logged in successfully" };  // This will be used for success
     } else if (response.status === 400) {
       return {
         status: 400,

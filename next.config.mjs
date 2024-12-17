@@ -19,6 +19,12 @@ const nextConfig = {
           port: '3000', // Specify the port for localhost, if applicable
           pathname: '/**', // Allows all paths
         },
+        {
+          protocol: 'http',
+          hostname: '192.168.88.95',
+          port: '8000', // Specify the port for the IP address
+          pathname: '/**', // Allows all paths
+        },
       ],
     },
   };

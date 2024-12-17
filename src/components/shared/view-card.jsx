@@ -3,14 +3,47 @@ import Image from "next/image";
 import students from "../../assets/images/student.png";
 import moment from "moment";
 import { useViewDialog } from "@/hooks/custom-view-dialog";
-import { viewCurrentStudentsFields } from "@/data/student/current-students/constant-data";
+import { viewPendingStudentsFields } from "@/data/student/pending-students/constatnt-data";
+import { handlePostInServer } from "@/lib/actions/post-server";
+import { toast } from "sonner";
 
 export default function ViewCard({ student }) {
   const [handleViewCurrentStudent, viewCurrentStudentsConfirmDialog] = useViewDialog({
+    onConfirm:(state)=>addNewStudent(state),
     title: "Student’s Interview",
-    fields: viewCurrentStudentsFields,
+    fields: viewPendingStudentsFields,
+    viewFooter:true
   });
-
+const addNewStudent = async(state) => {
+  try {
+    const data = {};
+    // Append all keys of state to data except 'loading' and 'error'
+    Object.keys(state).forEach(key => {
+      if (key !== 'loading' && key !== 'error') {
+        data[key] = state[key];
+      }
+    }
+    );
+    data["interview_time"] = moment(data["interview_time"]).format("YYYY-MM-DDTHH:mm:ssZ");
+    const {interview_time,student_id}=data
+    const response = await handlePostInServer(
+      "/dashboard/contacted-students/create/",
+      JSON.parse(JSON.stringify({interview_time,student_id})),
+      "/student",
+      true,
+      "object"
+    );
+    
+    if (response.success) {
+      toast.success(response.success);
+    } else {
+      toast.error(response.error);
+    }
+  } catch (error) {
+    console.error("Error adding section:", error);
+    toast.error("Error adding section");
+  }
+}
   return (
     <>
       <div

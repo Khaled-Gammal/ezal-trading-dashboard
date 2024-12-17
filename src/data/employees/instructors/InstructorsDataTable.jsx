@@ -72,7 +72,7 @@ export default function InstructorsDataTable({instructors}) {
   // // map the data to the columns
   const instructorsData = instructors?.results.map((admin) => {  
     return {
-      id: admin.admin_id,
+      id: admin?.instructor_id,
       full_name: admin?.full_name,
       departments: admin.departments.map((department) => department.department_name).join(", "),
       email: admin?.email,
@@ -114,7 +114,6 @@ export default function InstructorsDataTable({instructors}) {
   });
 
   const handleAddNewEmployee = async (state) => {
-    console.log("state=>", state);
      try {
       const data = new FormData();
       // Append all keys of state to data except 'loading' and 'error'
@@ -143,7 +142,7 @@ export default function InstructorsDataTable({instructors}) {
   // Handle the edit employee request
   const handleEdit = (state) => {
     try {
-      adminsData.forEach(async (row) => {
+      instructorsData.forEach(async (row) => {
         if (row.id === state.id) {
           const changes = compareData(row, state);
           if (Object.keys(changes).length > 0) {
@@ -151,12 +150,12 @@ export default function InstructorsDataTable({instructors}) {
             // Call the API to update the student
             const formData=changes
             const response = await handleUpdateInServer(
-              `/dashboard/admins/${row?.id}/`,
+              `/dashboard/instructors/${row?.id}/`,
               "PATCH",
               formData,
               true,
               "object",
-              "/employees/other-employees"
+              "/employees/instructors"
             );
             if (response.success) {
             toast.success(response.success);

@@ -48,7 +48,7 @@ export function DataTableDemo({
   onDelete = () => {},
   onEdit = () => {},
   onView = () => {},
-  onPagination = false,
+  onPagination = ()=>{},
   onSearch = false,
 }) {
   const [sorting, setSorting] = React.useState([]);

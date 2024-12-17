@@ -51,20 +51,20 @@ export default function LoginForm() {
       dispatch({ type: "errors", payload: errors });
       return;
     }
-
+  
     try {
       dispatch({ type: "loading", payload: true });
       const { email, password } = state;
       const response = await handleLogin({ email, password });
-
+  
+      console.log(response);
       if (response.status === 400) {
         // Handle server validation error
         dispatch({ type: "errors", payload: { password: response.message } });
         toast.error(response.message);
-      } else if (response.success) {
+      } else if (response.status === 200) {
         // Handle successful login
         toast.success(response.success);  // Display success message
-        console.log(response.success);  // Log the success message
       } else {
         // Handle any other errors
         toast.error(response.message);
