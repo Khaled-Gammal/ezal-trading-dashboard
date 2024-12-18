@@ -3,7 +3,7 @@
 export const addGroupFields = [
   {
     id: "group",
-    name: "group", // Add `name` here to match state
+    name: "name", // Add `name` here to match state
     label: "Group Name",
     placeholder: "Enter group name",
     type: "text",
@@ -25,7 +25,7 @@ export const addGroupFields = [
   },
   {
     id: "id",
-    name: "department", // Add `name` here to match state
+    name: "department_id", // Add `name` here to match state
     label: "Department Name",
     placeholder: "Select department name",
     type: "selected",
@@ -58,12 +58,19 @@ export const editGroupFields = [
     view: "name",
   },
   {
-    id: "department",
-    name: "department", // Add `name` here to match state
+    id: "id",
+    name: "department_id", // Add `name` here to match state
     label: "Department Name",
     placeholder: "Select department name",
     type: "selected",
-    options: ["Quran", "Tafseer", "Tagweed"],
+    path: "/dashboard/departments/",
+    view: "title",
+    options: [],
+    renderValue: (options,value) => {
+       console.log(options);
+      const department = options?.find((option) => option.id === Number(value));
+      return department ? department?.title : "Select your department";
+    },
   },
 ];
 
@@ -85,12 +92,19 @@ export const viewGroupFields = [
     disabled: true,
   },
   {
-    id: "department",
-    name: "department", // Add `name` here to match state
+    id: "id",
+    name: "department_id", // Add `name` here to match state
     label: "Department Name",
     placeholder: "Select department name",
     type: "selected",
-    options: ["Quran", "Tafseer", "Tagweed"],
+    path: "/dashboard/departments/",
+    view: "title",
+    options: [],
+    renderValue: (options,value) => {
+       console.log(options);
+      const department = options?.find((option) => option.id === Number(value));
+      return department ? department?.title : "Select your department";
+    },
     disabled: true,
   },
 ];

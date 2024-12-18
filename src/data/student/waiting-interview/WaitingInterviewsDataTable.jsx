@@ -23,7 +23,7 @@ export default function WaitingInterviewsDataTable({ waitingInterviews }) {
     <div>
       {WaitingInterviewStudents?.length > 0
         ? WaitingInterviewStudents.map((student, index) => (
-            <ViewCard key={index} student={student} />
+            <ViewCard key={index} student={student}/>
           ))
         : Array.from({ length: 1 }).map((_, index) => <ViewCard key={index} />)}
     </div>

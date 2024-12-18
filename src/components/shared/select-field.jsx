@@ -58,7 +58,7 @@ function SelectField({
       labelRef.current.classList.remove("text-primary"); // Remove primary color on blur
     }
   };
-console.log("options=>",options);
+console.log("options=>",value,options);
   return (
     <div className="w-full">
       {label && (
@@ -93,7 +93,7 @@ console.log("options=>",options);
           ) : (
             options?.map((item) => (
               console.log(item),
-              <SelectItem key={item} value={item[id]||item}>
+              <SelectItem key={item} value={item[id]?item[id]:item}>
                 {item[view] ? item[view] : item}
               </SelectItem>
             ))

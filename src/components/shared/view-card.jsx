@@ -6,12 +6,14 @@ import { useViewDialog } from "@/hooks/custom-view-dialog";
 import { viewPendingStudentsFields } from "@/data/student/pending-students/constatnt-data";
 import { handlePostInServer } from "@/lib/actions/post-server";
 import { toast } from "sonner";
+import { viewWaittingStudentsFields } from "@/data/student/waiting-interview/constatnt-data";
 
 export default function ViewCard({ student }) {
+
   const [handleViewCurrentStudent, viewCurrentStudentsConfirmDialog] = useViewDialog({
     onConfirm:(state)=>addNewStudent(state),
     title: "Student’s Interview",
-    fields: viewPendingStudentsFields,
+    fields:student?.type==="waiting"?viewWaittingStudentsFields: viewPendingStudentsFields,
     viewFooter:true
   });
 const addNewStudent = async(state) => {
@@ -25,10 +27,11 @@ const addNewStudent = async(state) => {
     }
     );
     data["interview_time"] = moment(data["interview_time"]).format("YYYY-MM-DDTHH:mm:ssZ");
-    const {interview_time,student_id}=data
+    const {interview_time, student_id: student} = data;
+    
     const response = await handlePostInServer(
       "/dashboard/contacted-students/create/",
-      JSON.parse(JSON.stringify({interview_time,student_id})),
+      JSON.parse(JSON.stringify({interview_time,student})),
       "/student",
       true,
       "object"

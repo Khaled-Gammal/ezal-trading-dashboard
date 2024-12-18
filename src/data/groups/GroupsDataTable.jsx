@@ -108,7 +108,7 @@ export default function GroupsDataTable({groups}) {
         }
       });
       const response = await handlePostInServer(
-        "/dashboard/groups/",
+        "/dashboard/groups/create/",
         JSON.parse(JSON.stringify(data)),
         "/groups",
         true,

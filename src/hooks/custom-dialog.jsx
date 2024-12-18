@@ -85,7 +85,7 @@ export const useAddDialog = ({
   };
 
   const dialog = (
-    <Dialog>
+    <Dialog className='overflow-y-auto max-h-screen'>
       <DialogTrigger asChild className="mt-[93px]">
         <div className="flex justify-end items-center ">
           <Button

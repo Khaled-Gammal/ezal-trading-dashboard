@@ -24,7 +24,7 @@ export default function PendingDataTable({ pendingStudent }) {
         ? PendingStudents.map((student, index) => (
             <ViewCard key={index} student={student} />
           ))
-        : Array.from({ length: 10 }).map((_, index) => (
+        : Array.from({ length: 1 }).map((_, index) => (
             <ViewCard key={index} />
           ))}
     </div>

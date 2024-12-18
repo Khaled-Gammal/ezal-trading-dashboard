@@ -15,7 +15,8 @@ export default function DragFile({ label, value, onChange, type, error }) {
     const file = e.target.files[0];
     onChange(file);
   };
-
+  const isImageUrl = typeof value === "string" && value.startsWith("http");
+  console.log(value);
   return (
     <div className="flex flex-col gap-1 w-full">
       <Label className="text-sm font-light text-gray-400">{label}</Label>
@@ -31,7 +32,9 @@ export default function DragFile({ label, value, onChange, type, error }) {
                   {value?.name}
                 </span>
                 <span>
-                  <MoveDown size={16} color="#8D8D8DD9" />
+                  <MoveDown size={16} color="#8D8D8DD9" className="cursor-pointer" onClick={()=>{
+                  window?.open(value)
+                }}/>
                 </span>
               </p>
             </div>
@@ -49,11 +52,29 @@ export default function DragFile({ label, value, onChange, type, error }) {
                 {value?.name}
               </span>
               <span>
-                <MoveDown size={16} color="#8D8D8DD9" />
+                <MoveDown size={16} color="#8D8D8DD9" onClick={()=>{
+                  window?.open(value)
+                }}/>
               </span>
             </p>
           </div>
-        ) : null
+        ) : type==="image"&&(
+          <div>
+          <div className="h-[73px] w-full md:w-[160px]">
+            <Image src={isImageUrl?value:URL.createObjectURL(value)} alt="image" height={73} width={160} className="object-fill"/>
+          </div>
+          <p className="text-xs font-light text-gray-400 flex justify-between w-full md:w-[160px] py-2 ">
+            <span className="text-ellipsis text-nowrap overflow-hidden">
+              {value?.name}
+            </span>
+            <span>
+              <MoveDown size={16} color="#8D8D8DD9" onClick={()=>{
+                window?.open(value)
+              }}/>
+            </span>
+          </p>
+        </div>
+        )
       ) : (
         <div className="flex flex-col justify-center items-center gap-[9px] py-3 border border-dashed  rounded">
           <Image src={drag} alt="drag" onClick={handleFile} />

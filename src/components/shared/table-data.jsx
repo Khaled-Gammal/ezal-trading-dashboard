@@ -13,8 +13,10 @@ import {
   ArrowUpDown,
   ChevronDown,
   EllipsisVertical,
+  FileText,
   Image,
   Loader,
+  MonitorPlay,
   MoreHorizontal,
   PencilLine,
   Trash2,
@@ -196,7 +198,17 @@ export function DataTableDemo({
                         <Image color="#BF9E5C" onClick={()=>{
                           window.open(cell.row.original.image)
                         }} />
-                      ): (
+                      ): cell.column.columnDef.id === "pdf"?(
+                        // eslint-disable-next-line jsx-a11y/alt-text
+                        <FileText color="#BF9E5C"  onClick={()=>{
+                          window.open(cell.row.original.pdf)
+                        }} />
+                      ):cell.column.columnDef.id === "video"?(
+                        <MonitorPlay  color="#BF9E5C" onClick={()=>{
+                          window.open(cell.row.original.video)
+                        }}/>
+                      ):
+                      (
                         flexRender(
                           cell.column.columnDef.cell,
                           cell.getContext()

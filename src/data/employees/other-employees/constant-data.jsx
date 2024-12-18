@@ -49,7 +49,7 @@ export const addEmployFields = [
         required: true,
       },
       {
-        id:"section_id",
+        id:"id",
         name: "section_id",  // Add `name` here to match state
         label: "Section",
         placeholder: "select your section",
@@ -58,9 +58,8 @@ export const addEmployFields = [
         view: "name",
         options: [],
         renderValue: ( options,value) => {
-          console.log(options,value);
-          const section = options?.find((option) => option.id === Number(value));
-          return section ? section?.name : "Select your section";
+          const section = options?.find((option) => option.id === Number(value))?.name
+          return section ? section : "Select your section";
         },
         required: true,
       },
@@ -179,16 +178,15 @@ export const addEmployFields = [
     },
     {
       id:"id",
-      name: "section_id",  // Add `name` here to match state
+      name: "department_id",  // Add `name` here to match state
       label: "Section",
       placeholder: "select your section",
       type: "selected",
       path: "/dashboard/sections/",
       view: "name",
-      options: [],
+      options:[],
       renderValue: ( options,value) => {
-        console.log(options,value);
-        const section = options?.find((option) => option?.id === Number(value))?.name;
+        const section = options?.find((option) => console.log(option));
         return section ? section : "Select your section";
       },
       required: true,
