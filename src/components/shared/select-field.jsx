@@ -26,6 +26,7 @@ function SelectField({
   const [loading, setLoading] = useState(false);
   const [options, setOptions] = useState(intialValue);
   const labelRef = useRef(null);
+console.log(path);
 
   const handleGetData = async () => {
     setLoading(true);

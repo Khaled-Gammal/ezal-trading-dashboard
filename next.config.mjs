@@ -14,9 +14,8 @@ const nextConfig = {
           pathname: '/**', // Allows all paths under the domain
         },
         {
-          protocol: 'http',
-          hostname: 'localhost',
-          port: '3000', // Specify the port for localhost, if applicable
+          protocol: 'https',
+          hostname: 'sharp-fully-ladybug.ngrok-free.app',
           pathname: '/**', // Allows all paths
         },
         {

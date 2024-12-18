@@ -2,19 +2,19 @@
 
 import ViewCard from "@/components/shared/view-card";
 export default function WaitingInterviewsDataTable({ waitingInterviews }) {
+  console.log("waitingInterviews", waitingInterviews);
+  
   const WaitingInterviewStudents = waitingInterviews?.results?.map(
     (student) => {
       console.log("student", student);
       return {
-        full_name: student.full_name,
-        student_id: student.student_id,
-        image: student.user_image,
-        time: student.created_at,
-        email: student.email,
-        phone: student.phone,
-        age: student.age,
-        gender: student.gender,
-        student_code: student.student_code,
+        id: student.id,
+        full_name: student?.student?.full_name,
+        student_id: student.student.user_id,
+        image: student.student.user_image,
+        email: student.student.email,
+        phone: student.student.phone,
+       type:'waiting-interview'
       };
     }
   );

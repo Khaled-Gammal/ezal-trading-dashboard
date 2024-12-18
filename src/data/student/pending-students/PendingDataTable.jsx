@@ -2,6 +2,8 @@
 import ViewCard from "@/components/shared/view-card";
 
 export default function PendingDataTable({ pendingStudent }) {
+  console.log("pendingStudent", pendingStudent);
+  
   const PendingStudents = pendingStudent?.results?.map((student) => {
     console.log("student",student);
     return {

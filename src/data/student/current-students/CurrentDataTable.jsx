@@ -16,6 +16,7 @@ import { editCurrentStudentsFields, viewCurrentStudentsFields } from "./constant
 
 
 export default function CurrentDataTable({currentStudent}) {
+console.log(currentStudent);
 
   const columns = [
     {

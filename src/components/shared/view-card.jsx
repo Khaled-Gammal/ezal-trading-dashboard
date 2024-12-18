@@ -6,14 +6,15 @@ import { useViewDialog } from "@/hooks/custom-view-dialog";
 import { viewPendingStudentsFields } from "@/data/student/pending-students/constatnt-data";
 import { handlePostInServer } from "@/lib/actions/post-server";
 import { toast } from "sonner";
-import { viewWaittingStudentsFields } from "@/data/student/waiting-interview/constatnt-data";
+import { viewWaitingStudentsFields } from "@/data/student/waiting-interview/constatnt-data";
+
 
 export default function ViewCard({ student }) {
 
   const [handleViewCurrentStudent, viewCurrentStudentsConfirmDialog] = useViewDialog({
     onConfirm:(state)=>addNewStudent(state),
     title: "Student’s Interview",
-    fields:student?.type==="waiting"?viewWaittingStudentsFields: viewPendingStudentsFields,
+    fields:student?.type==="waiting-interview"?viewWaitingStudentsFields: viewPendingStudentsFields,
     viewFooter:true
   });
 const addNewStudent = async(state) => {
@@ -26,9 +27,24 @@ const addNewStudent = async(state) => {
       }
     }
     );
+    if(student?.type==="waiting-interview"){
+      
+     const {group_id,code} = data;
+      const response = await handlePostInServer(
+        `/dashboard/contacted-students/${student.id}/activate/`,
+        JSON.parse(JSON.stringify({group_id,code})),
+        "/student",
+        true,
+        "object"
+      );
+      if (response.success) {
+        toast.success(response.success);
+      } else {
+        toast.error(response.error);
+      }
+    }else{
     data["interview_time"] = moment(data["interview_time"]).format("YYYY-MM-DDTHH:mm:ssZ");
     const {interview_time, student_id: student} = data;
-    
     const response = await handlePostInServer(
       "/dashboard/contacted-students/create/",
       JSON.parse(JSON.stringify({interview_time,student})),
@@ -42,6 +58,7 @@ const addNewStudent = async(state) => {
     } else {
       toast.error(response.error);
     }
+  }
   } catch (error) {
     console.error("Error adding section:", error);
     toast.error("Error adding section");

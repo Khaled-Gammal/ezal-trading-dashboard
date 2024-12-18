@@ -90,7 +90,7 @@ export const useViewDialog = ({
 console.log(state);
   const dialog = (
     <Dialog open={open} onOpenChange={handleClose}>
-      <DialogContent className="sm:max-w-[425px]">
+      <DialogContent className="sm:max-w-[425px] overflow-y-auto max-h-screen">
         <DialogHeader>
           <DialogTitle className="text-center text-primary text-lg font-medium">
             {title}
@@ -98,7 +98,7 @@ console.log(state);
         </DialogHeader>
         <form onSubmit={handleSubmit}>
           <div className="flex flex-col items-center gap-4 pt-[35px] pb-[29px]">
-            {fields.map((field) =>
+            {fields?.map((field) =>
               field.type === "image" ? (
                 <div className="mb-2" key={field.id}>
                   <ImagePicker
@@ -118,10 +118,11 @@ console.log(state);
                   id={field.id}
                   label={field.label}
                   placeholder={field.placeholder}
-                  error={state.error}
+                  // error={state?.error[field?.name]||""} // Display individual field error
+                  path={field.path}
                   view={field.view}
+                  renderValue={field.renderValue}
                   value={state[field.name] || ""}
-                  disabled={field.disabled}
                   options={field.options}
                   onChange={(value) => {
                     dispatch({

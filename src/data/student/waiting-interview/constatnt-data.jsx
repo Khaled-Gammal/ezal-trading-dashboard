@@ -1,4 +1,4 @@
-export const viewWaittingStudentsFields = [
+export const viewWaitingStudentsFields = [
     {
         id: "image",
         name: "image",  // Add `name` here to match state
@@ -16,19 +16,11 @@ export const viewWaittingStudentsFields = [
       disabled: true,
     },
     {
-      id:"phone_number",
-      name: "phone_number",  // Add `name` here to match state
+      id:"phone",
+      name: "phone",  // Add `name` here to match state
       label: "Phone Number",
       placeholder: "Enter your phone number",
       type: "phone",
-      disabled: true,
-    },
-    {
-      id: "age",
-      name: "age",  // Add `name` here to match state
-      label: "Age",
-      placeholder: "Enter your age",
-      type: "number",
       disabled: true,
     },
     {
@@ -39,31 +31,29 @@ export const viewWaittingStudentsFields = [
       type: "email",
       disabled: true,
     },
-    {
-      id:"gender",
-      name: "gender",  // Add `name` here to match state
-      label: "Gender",
-      placeholder: "select your gender",
-      type: "selected",
-      options: ["Male", "Female", "Other"],
-      disabled: true,
-    },
-    {
-      id:"id",
-      name: "department_id",  // Add `name` here to match state
-      label: "Section",
-      placeholder: "select your section",
-      type: "selected",
-      path: "/dashboard/sections/",
-      view: "name",
-      options: [],
-      renderValue: ( options,value) => {
-        console.log(options,value);
-        const section = options?.find((option) => option?.id === Number(value))?.name;
-        return section ? section : "Select your section";
-      },
+   {
+      id:"student_code",
+      name: "code",  // Add `name` here to match state
+      label: "Student Code",
+      placeholder: "Enter your student code",
+      type: "text",
       required: true,
     },
+    // {
+    //   id:"id",
+    //   name: "department_id",  // Add `name` here to match state
+    //   label: "Section",
+    //   placeholder: "select your section",
+    //   type: "selected",
+    //   path: "/dashboard/sections/",
+    //   view: "name",
+    //   options: [],
+    //   renderValue: ( options,value) => {
+    //     const section = options?.find((option) => option?.id === Number(value))?.name;
+    //     return section ? section : "Select your section";
+    //   },
+    //   required: true,
+    // },
     {
       id: "group_id",
       name: "group_id", // Add `name` here to match state
@@ -74,9 +64,8 @@ export const viewWaittingStudentsFields = [
       view:'name',
       options: [],
       renderValue: (options, value) => {  
-        console.log(value);
-        const group = options?.find((option) => option?.id === Number(value))?.name;
-        return group ? group : "Select your group";
+        const department = options?.find((option) => option.id === Number(value))?.name;
+        return department ? department : "Select your group";
       },
       required: true,
     },
