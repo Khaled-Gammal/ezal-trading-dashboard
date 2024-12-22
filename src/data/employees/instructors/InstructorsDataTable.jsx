@@ -10,9 +10,14 @@ import { toast } from "sonner";
 import { handleDeleteRow } from "@/lib/actions/delete-server";
 import { useViewDialog } from "@/hooks/custom-view-dialog";
 import { handlePostInServer } from "@/lib/actions/post-server";
+import { usePathname, useRouter, useSearchParams } from "next/navigation";
 
 
 export default function InstructorsDataTable({instructors}) {
+  const searchParams = useSearchParams()
+  const pathname = usePathname();
+  const { replace } = useRouter();
+
   console.log(instructors);
 // columns for the table
   const columns = [
@@ -172,15 +177,27 @@ export default function InstructorsDataTable({instructors}) {
    
   }
  
+  const handlePagonation=(page)=>{
+    const params = new URLSearchParams(searchParams);
+    console.log("page",page)
+    if (page) {
+      params.set('page', page||1);
+    } else {
+      params.delete('page');
+    }
+    replace(`${pathname}?${params.toString()}`);
+    
+  }
   return (
     <div>
         <DataTableDemo 
        data={instructorsData}
-        columns={columns}
-        isPending={false} 
+      columns={columns}
+      isPending={false} 
       onDelete={handleDelete}
       onEdit={handleEditEmployee}
       onView={handleViewEmployee}
+      onPagination={(page)=>handlePagonation(page)}
       />
      {deleteComponentConfirmDialog}
      {editEmployeeConfirmDialog} 
