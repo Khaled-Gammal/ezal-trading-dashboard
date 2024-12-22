@@ -192,6 +192,7 @@ export default function InstructorsDataTable({instructors}) {
     <div>
         <DataTableDemo 
        data={instructorsData}
+       count={instructors?.count}
       columns={columns}
       isPending={false} 
       onDelete={handleDelete}
