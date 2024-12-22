@@ -53,7 +53,7 @@ export function DataTableDemo({
   onView = () => {},
   onPagination = ()=>{},
   pagination=10,
-  count=50,
+  count=10,
   onSearch = false,
 }) {
   const [sorting, setSorting] = React.useState([]);
