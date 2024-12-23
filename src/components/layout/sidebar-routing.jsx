@@ -1,4 +1,4 @@
-import { act } from "react";
+
 
 const {
   LayoutDashboard,
@@ -7,12 +7,12 @@ const {
   Plug,
   MapPin,
   GitPullRequest,
-  ChartNoAxesCombined,
   Users,
   PanelTopOpen,
   ClipboardMinus,
   ClipboardList,
   ChartColumn,
+  Layers,
 } = require("lucide-react");
 
 export let PageRoutes = [
@@ -61,6 +61,11 @@ export let PageRoutes = [
         active: "employees",
       },
     ],
+  },{
+    title: "Departments",
+    path: "/departments",
+    icon: <Layers />,
+    active: "departments",
   },
   {
     title: "Groups",
