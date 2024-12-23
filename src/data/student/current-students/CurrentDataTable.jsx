@@ -16,7 +16,7 @@ import { editCurrentStudentsFields, viewCurrentStudentsFields } from "./constant
 
 
 export default function CurrentDataTable({currentStudent}) {
-console.log(currentStudent);
+console.log(currentStudent.results);
 
   const columns = [
     {
@@ -77,6 +77,7 @@ console.log(currentStudent);
       student_code: student.student_code,
       full_name: student.full_name,
       student_id: student.student_id,
+      user_image:student?.user_image,
       groups: student.groups.map((group) => group.group_name).join(", "),
       department: student.departments?.map((department) => department.department_name).join(", "),
       phone_number: student.phone_number,

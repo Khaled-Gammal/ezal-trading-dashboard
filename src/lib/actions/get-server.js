@@ -6,8 +6,10 @@ import { redirect } from "next/navigation";
 
 export async function GetDataInServerSide(
   End_Point = "",
+  page,
   ExtraMethod = {},
-  Authorization = true
+  Authorization = true,
+ 
 ) {
   /*
    * Default Headers If Not Provided Or Not Valid.
@@ -24,7 +26,17 @@ export async function GetDataInServerSide(
   let redirectPath;
  
   try {
-    const response = await fetch(BASE_URL + End_Point, {
+    console.log(page);
+    if (page) {
+      page = { page: page };
+    }
+    
+    const queryParams = new URLSearchParams(page);
+   console.log(queryParams);
+   
+    const fullEndpoint = `${BASE_URL}${End_Point}?${queryParams.toString()}`;
+    console.log(fullEndpoint)
+    const response = await fetch(fullEndpoint, {
       method: "GET",
       headers: headers,
       // ? if You Want To Use Extra Method For Request Such as Cache Control, etc.

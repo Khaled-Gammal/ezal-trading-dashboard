@@ -1,3 +1,4 @@
+import DepartmentsDataTable from '@/data/departments/departments-DataTable'
 import { GetDataInServerSide } from '@/lib/actions/get-server'
 import React from 'react'
 
@@ -6,7 +7,9 @@ async function DepartmentsPage({searchParams}) {
         '/dashboard/departments/'
       )
   return (
-    <div>page</div>
+    <div>
+        <DepartmentsDataTable departments={departments}/>
+    </div>
   )
 }
 
