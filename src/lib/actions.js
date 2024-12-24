@@ -1,6 +1,5 @@
 "use server";
 import { setCookie } from "cookies-next";
-import { redirect } from "next/navigation";
 import { cookies } from "next/headers";
 const { Expired_time, BASE_URL } = require("./utils");
 
@@ -26,7 +25,6 @@ async function handleLogin({ email, password }) {
       message: "Password must have at least one uppercase, one lowercase, and one number",
     };
   }
-
   try {
     const response = await fetch(BASE_URL + "/dashboard/login/", {
       method: "POST",
@@ -56,10 +54,7 @@ async function handleLogin({ email, password }) {
   } catch (error) {
     console.log("Error", error);
     return { message: error.message || "An error occurred" };
-  } finally {
-
-      redirect('/');
-  }
+  } 
 }
 
 export { handleLogin };

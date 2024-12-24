@@ -8,6 +8,7 @@ import { toast } from "sonner";
 import { useReducer } from "react";
 import { validate } from "@/lib/validation";
 import { Loader2 } from "lucide-react";
+import { useRouter } from "next/navigation";
 
 const initialValues = {
   email: "",
@@ -35,6 +36,7 @@ function reducer(state, action) {
 }
 
 export default function LoginForm() {
+  const router=useRouter();
   const [state, dispatch] = useReducer(reducer, initialValues);
   const schema = {
     email: {
@@ -58,11 +60,12 @@ export default function LoginForm() {
       const response = await handleLogin({ email, password });
   
       console.log(response);
-      if (response && response.status === 200) {
+      if ( response.status === 200) {
         console.log("Login successful");
         // Handle successful login
-         toast.success(response.message);  // Display success message
-         
+       
+         toast.success(response.success);  // Display success message
+         window.location.href = "/";
       } else if (response.status === 400) {
         // Handle server validation error
         dispatch({ type: "errors", payload: { password: response.message } });
