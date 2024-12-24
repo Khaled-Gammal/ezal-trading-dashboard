@@ -10,9 +10,12 @@ import { toast } from "sonner";
 import { handleDeleteRow } from "@/lib/actions/delete-server";
 import { useViewDialog } from "@/hooks/custom-view-dialog";
 import { handlePostInServer } from "@/lib/actions/post-server";
+import { useRouter } from "next/navigation";
 
 
 export default function EmployeesDataTable({admins}) {
+
+  const router = useRouter();
 // columns for the table
   const columns = [
     {
@@ -36,9 +39,9 @@ export default function EmployeesDataTable({admins}) {
       accessorKey: "email",
     },
     {
-      id: "phone_number",
+      id: "phone",
       header: "Phone Number",
-      accessorKey: "phone_number",
+      accessorKey: "phone",
     },{
       id: "gender",
       header: "Gender",
@@ -70,7 +73,7 @@ export default function EmployeesDataTable({admins}) {
       section: admin.section_name,
       section_id: admin.section_id,
       email: admin.email,
-      phone_number: admin.phone_number,
+      phone: admin.phone,
       gender: admin.gender,
       age: admin.age,
       is_active: admin.is_active ? "Active" : "Inactive",
@@ -107,6 +110,7 @@ export default function EmployeesDataTable({admins}) {
     title: "Delete Employee",
   });
 
+  // add a new employee
   const handleAddNewEmployee = async (state) => {
     try {
       const data = new FormData();
@@ -175,7 +179,7 @@ export default function EmployeesDataTable({admins}) {
        columns={columns} isPending={false} 
       onDelete={handleDelete}
       onEdit={handleEditEmployee}
-      onView={handleViewEmployee}
+      onView={(row)=>router.push(`/employees/other-employees/${row.id}`)}
       />
      {deleteComponentConfirmDialog}
      {editEmployeeConfirmDialog}

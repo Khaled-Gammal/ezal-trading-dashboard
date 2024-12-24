@@ -45,6 +45,7 @@ const reducer = (state, action) => {
 export const useAddDialog = ({
   title = "Add Items",
   fields,
+  className,
   onConfirm = () => {},
 }) => {
   const [args, setArgs] = useState(null);
@@ -86,11 +87,11 @@ export const useAddDialog = ({
 
   const dialog = (
     <Dialog className='overflow-y-auto'>
-      <DialogTrigger asChild className="mt-[93px]">
+      <DialogTrigger asChild className="">
         <div className="flex justify-end items-center ">
           <Button
             variant="outline"
-            className="rounded-full bg-primary text-[#fff] h-[39px] w-[39px] flex justify-center"
+            className={`rounded-full bg-primary text-[#fff] h-[39px] w-[39px] flex justify-center mt-[93px] ${className}`}
           >
             <Plus size={32} />
           </Button>

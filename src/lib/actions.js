@@ -27,8 +27,6 @@ async function handleLogin({ email, password }) {
     };
   }
 
-  // ######### Post Actions #########
-  let redirectPath;
   try {
     const response = await fetch(BASE_URL + "/dashboard/login/", {
       method: "POST",
@@ -41,7 +39,7 @@ async function handleLogin({ email, password }) {
 
     if (response.status === 200) {
       setCookie("token", data?.token, { cookies }, Expired_time);
-      redirectPath = `/`;
+     
       return {
         status: 200,
         success: "User logged in successfully" };  // This will be used for success
@@ -59,9 +57,8 @@ async function handleLogin({ email, password }) {
     console.log("Error", error);
     return { message: error.message || "An error occurred" };
   } finally {
-    if (redirectPath) {
-      redirect(redirectPath);
-    }
+
+      redirect('/');
   }
 }
 

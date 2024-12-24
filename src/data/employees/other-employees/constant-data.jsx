@@ -186,10 +186,10 @@ export const addEmployFields = [
       view: "name",
       options:[],
       renderValue: ( options,value) => {
-        const section = options?.find((option) => console.log(option));
+        const section = options?.find((option) => option.id === Number(value))?.name;
         return section ? section : "Select your section";
       },
-      required: true,
+      disabled: true,
     },
     {
         id:'gender',

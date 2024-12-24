@@ -6,6 +6,7 @@ import videoIcon from "../../assets/images/videoimage.png";
 import { useRef, useState } from "react";
 import { Label } from "../ui/label";
 import { MoveDown, Plus } from "lucide-react";
+import Link from "next/link";
 export default function DragFile({ label, value, onChange, type, error }) {
   const inputRef = useRef(null);
   const handleFile = () => {
@@ -32,9 +33,13 @@ export default function DragFile({ label, value, onChange, type, error }) {
                   {value?.name}
                 </span>
                 <span>
-                  <MoveDown size={16} color="#8D8D8DD9" className="cursor-pointer" onClick={()=>{
-                  window?.open(value)
-                }}/>
+                <a href={"#"} download={value}>
+                  <MoveDown size={16} color="#8D8D8DD9" className="cursor-pointer" 
+                //   onClick={()=>{
+                //   window?.open(value)
+                // }}
+                />
+                </a>
                 </span>
               </p>
             </div>
@@ -60,7 +65,7 @@ export default function DragFile({ label, value, onChange, type, error }) {
           </div>
         ) : type==="image"&&(
           <div>
-          <div className="h-[73px] w-full md:w-[160px]">
+          <div className="h-[73px] w-full md:w-[160px] overflow-auto">
             <Image src={isImageUrl?value:URL.createObjectURL(value)} alt="image" height={73} width={160} className="object-fill"/>
           </div>
           <p className="text-xs font-light text-gray-400 flex justify-between w-full md:w-[160px] py-2 ">
@@ -68,9 +73,13 @@ export default function DragFile({ label, value, onChange, type, error }) {
               {value?.name}
             </span>
             <span>
-              <MoveDown size={16} color="#8D8D8DD9" onClick={()=>{
-                window?.open(value)
-              }}/>
+              <a href={"#"} download={value}>
+              <MoveDown size={16} color="#8D8D8DD9" 
+              // onClick={()=>{
+              //   window?.open(value)
+              // }}
+              />
+              </a>
             </span>
           </p>
         </div>
