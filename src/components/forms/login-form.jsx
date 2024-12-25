@@ -55,15 +55,13 @@ export default function LoginForm() {
     }
   
     try {
+      
+      const loadingId=toast.loading("Please wait...");
       dispatch({ type: "loading", payload: true });
       const { email, password } = state;
       const response = await handleLogin({ email, password });
-  
-      console.log(response);
       if ( response.status === 200) {
-        console.log("Login successful");
         // Handle successful login
-       
          toast.success(response.success);  // Display success message
          window.location.href = "/";
       } else if (response.status === 400) {
@@ -72,12 +70,13 @@ export default function LoginForm() {
         toast.error(response.message);
       } else {
         // Handle any other errors
-        // toast.error(response.message);
+        toast.error(response.message);
       }
     } catch (error) {
       toast.error(error.message);
     } finally {
       dispatch({ type: "loading", payload: false });
+      toast.dismiss(loadingId)
     }
   }
 

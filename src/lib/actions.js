@@ -40,7 +40,7 @@ async function handleLogin({ email, password }) {
      
       return {
         status: 200,
-        success: "User logged in successfully" };  // This will be used for success
+        success: "Admin logged in successfully" };  // This will be used for success
     } else if (response.status === 400) {
       return {
         status: 400,

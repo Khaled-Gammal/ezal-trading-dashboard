@@ -11,10 +11,13 @@ export default  function DashboardLayout({ children }) {
     <SidebarProvider>
       <AppSidebar variant="inset" />
 
-      <SidebarTrigger />
+     
       <div className="flex flex-col w-full">
       <TopBar />
-      <div className="px-1 md:px-6 my-6">{children}
+      <SidebarTrigger />
+      <div className="px-1 md:px-6 my-6">
+     
+        {children}
       </div>
       </div>
     </SidebarProvider>

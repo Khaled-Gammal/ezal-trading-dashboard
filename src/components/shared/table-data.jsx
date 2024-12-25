@@ -43,6 +43,7 @@ import {
   TableRow,
 } from "@/components/ui/table";
 import PaginatedItems from "./pagination";
+import EmptyData from "./empty-data";
 
 export function DataTableDemo({
   isPending = false,
@@ -225,9 +226,9 @@ export function DataTableDemo({
               <TableRow>
                 <TableCell
                   colSpan={columns.length}
-                  className="h-24 text-center"
+                  className="h-[70vh] text-center"
                 >
-                  No results.
+                 <EmptyData/>
                 </TableCell>
               </TableRow>
             )}

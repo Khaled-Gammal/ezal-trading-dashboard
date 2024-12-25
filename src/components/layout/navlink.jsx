@@ -41,7 +41,7 @@ function NavLink({ data }) {
     return (
       <Accordion type="single" collapsible>
         <AccordionItem value="item-1" className="border-0 px-0 py-0">
-          <AccordionTrigger className={cn(" text-base font-normal hover:border-l-[6px] hover:border-l-primary rounded-tr-[10px] rounded-br-[10px] h-[60px] flex items-center hover:no-underline")}>
+          <AccordionTrigger className={cn(" text-base font-normal hover:border-l-[6px] hover:border-l-primary rounded-t-[10px] rounded-b-[10px] h-[60px] flex items-center hover:no-underline")}>
             <p className="h-[46px] text-gray-400 text-base font-normal hover:bg-primary hover:text-[#fff] ml-4 pl-6 flex items-center gap-1 w-full rounded-sm">
               {data?.icon}
               {data?.title}
@@ -71,8 +71,8 @@ function NavLink({ data }) {
           <SidebarMenuItem
             className={`${
               isActive(data?.active)
-                ? "border-l-[6px] border-l-primary rounded-tr-xl rounded-br-xl h-[60px] flex items-center text-base"
-                : "hover:border-l-[6px] hover:border-l-primary rounded-tr-xl rounded-br-xl h-[60px] flex items-center text-base"
+                ? "border-l-[6px] border-l-primary rounded-s-xl rounded-e-xl h-[60px] flex items-center text-base"
+                : "hover:border-l-[6px] hover:border-l-primary rounded-t-xl rounded-b-xl h-[60px] flex items-center text-base"
             }`}
           >
             <SidebarMenuButton

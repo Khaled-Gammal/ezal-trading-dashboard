@@ -43,21 +43,22 @@ function DepartmentsDataTable({ departments }) {
 
   // handle add function
   const handleAddNewDepartment = async(state) => {
+    
     try {
-      const data = {};
+      const formData = new FormData();
       // Append all keys of state to data except 'loading' and 'error'
       Object.keys(state).forEach(key => {
         if (key !== 'loading' && key !== 'error') {
-          data[key] = state[key];
+          formData.append(key, state[key]);
         }
       });
      
       const response = await handlePostInServer(
-        "/dashboard/departments/",
-        JSON.parse(JSON.stringify(data)),
+        "/dashboard/departments/create-department/",
+        formData,
         "/departments",
-        true,
-        "object"
+        false,
+        "formData"
       );
       console.log(response);
       if (response.success) {
