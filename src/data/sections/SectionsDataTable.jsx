@@ -54,7 +54,7 @@ console.log(sections);
   // add Section dialog
   const [handleAddSection, addSectionConfirmDialog] = useAddDialog({
     onConfirm: (state) => handleAddNewSection(state),
-    title: "Add a New Section",
+    path: "sections/new-section",
     fields: addSectionFields,
   });
 

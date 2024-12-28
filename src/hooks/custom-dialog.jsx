@@ -90,10 +90,12 @@ export const useAddDialog = ({
       <DialogTrigger asChild className="">
         <div className="flex justify-end items-center ">
           <Button
-            variant="outline"
-            className={`rounded-full bg-primary text-[#fff] h-[39px] w-[39px] flex justify-center mt-[93px] ${className}`}
+           
+            className={`rounded-[6px] bg-primary text-[#fff] h-[39px] w-[119px] flex justify-center  hover:bg-primary ${className}`}
           >
+           
             <Plus size={32} />
+            <span className="ml-2">Add</span>
           </Button>
         </div>
       </DialogTrigger>

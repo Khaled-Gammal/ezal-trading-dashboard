@@ -9,6 +9,7 @@ import { useReducer } from "react";
 import { validate } from "@/lib/validation";
 import { Loader2 } from "lucide-react";
 import { useRouter } from "next/navigation";
+import Link from "next/link";
 
 const initialValues = {
   email: "",
@@ -96,6 +97,7 @@ export default function LoginForm() {
         onChange={(e) => dispatch({ type: "email", payload: e.target.value })}
         error={state.errors.email}
       />
+      <div className="flex flex-col gap-2">
       <PasswordField
         name="password"
         label="Password"
@@ -108,8 +110,15 @@ export default function LoginForm() {
         }
         error={state.errors.password}
       />
+      <Link
+        href="/forget-password"
+        className="text-gray-300 text-sm cursor-pointer hover:text-primary flex justify-end"
+      >
+        Forget Password?
+      </Link>
+      </div>
       <Button
-        className="mt-4 md:w-[310px] sm:w-[50%]"
+        className="mt-4 md:w-[310px] sm:w-[50%] hover:bg-primary border border-primary"
         type="submit"
         disabled={state?.loading}
       >

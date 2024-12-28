@@ -65,7 +65,7 @@ export default async function Home() {
     ]
     return (
         <section className="flex gap-8 flex-col">
-            <div className="grid md:grid-cols-4 sm:grid-cols-1 space-x-5">
+            <div className="grid md:grid-cols-4 sm:grid-cols-1 gap-6">
                 {
                     Array.from({ length: 4 }).map((_, i) => (
                         <div key={i} className={`${card['main-card']} flex flex-col gap-4`}>
@@ -76,12 +76,12 @@ export default async function Home() {
                     ))
                 }
             </div>
-            <div className="grid md:grid-cols-2 sm:grid-cols-1 space-x-5">
+            <div className="grid md:grid-cols-2 sm:grid-cols-1 gap-6">
                 <TotalUsersChart />
                 <Component />
 
                 </div>
-                <div className="grid md:grid-cols-1 sm:grid-cols-1 space-x-5">
+                <div className="grid md:grid-cols-1 sm:grid-cols-1 gap-6">
                     <DataTableDemo
                     columns={columns}
                     data={data}

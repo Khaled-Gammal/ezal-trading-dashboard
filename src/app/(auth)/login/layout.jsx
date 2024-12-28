@@ -1,7 +1,7 @@
 
 export const metadata = {
     title: "Login Page",
-    description: "ELAGOUZ - Login Page ",
+    description: "EZAL TRADING - Login Page ",
 };
 
 

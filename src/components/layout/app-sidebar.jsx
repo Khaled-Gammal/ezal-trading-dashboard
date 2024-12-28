@@ -20,8 +20,8 @@ export function AppSidebar() {
   return (
     <Sidebar className="w-[250px]">
       <SidebarContent className="bg-background ">
-        <div className="flex justify-center mb-[49.91px]">
-          <Image src={logo} alt="logo" />
+        <div className="flex justify-center mb-[41px] mt-6">
+          <Image src={logo} alt="logo" height={91} width={103}/>
         </div>
         <SidebarGroup>
           <Suspense fallback={<SidbarSkelton/>}>
